@@ -22,5 +22,6 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react-hooks'], 
   rules: {
     'indent': ['error', 'tab'],
+    'semi': ['error', 'always']
   },
 };
