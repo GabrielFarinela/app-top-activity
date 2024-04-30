@@ -10,8 +10,30 @@ export const Container = styled.div<ContainerProps>`
    justify-content: space-between;
    align-items: flex-end;
 
+   position: relative;
+
    width: 100vw;
    height: 100vh;
+`;
+
+export const ImageBottomRight = styled.div`
+   position: absolute; 
+   bottom: 0; 
+   right: 700px;
+
+   @media (max-width: 1050px) {
+      display: none;
+   }
+`;
+
+export const ImageTopLeft = styled.div`
+   position: absolute; 
+   top: 81px; 
+   left: 0;
+
+   @media (max-width: 1050px) {
+      display: none;
+   }
 `;
 
 export const Header = styled.div`

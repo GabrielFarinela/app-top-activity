@@ -9,9 +9,40 @@ export const Container = styled.div<ContainerProps>`
    flex-direction: column;
    justify-content: space-between;
 
+   position: relative;
+
    width: 100vw;
    height: 100vh;
 `;
+
+export const ImageBottomRight = styled.div`
+   position: absolute; 
+   bottom: 0; 
+   left: 700px;
+
+   @media (max-width: 1050px) {
+      display: none;
+   }
+
+   @media (max-height: 890px) {
+      display: none;
+   }
+`;
+
+export const ImageTopLeft = styled.div`
+   position: absolute; 
+   top: 81px; 
+   right: 0;
+
+   @media (max-width: 1050px) {
+      display: none;
+   }
+
+   @media (max-height: 890px) {
+      display: none;
+   }
+`;
+
 
 export const Header = styled.div`
    background-color: #202024; 

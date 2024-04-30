@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, ContainerForm, Form, Header } from './styles';
+import { Container, ContainerForm, Form, Header, ImageBottomRight, ImageTopLeft } from './styles';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import Span from '../../components/span';
@@ -27,6 +27,12 @@ const SignUp: React.FC<SignUpProps> = () => {
 					Cadastro
 				</Span>
 			</Header>
+			<ImageTopLeft>
+				<img src="/src/assets/verde-top-right.svg" alt="" />
+			</ImageTopLeft>
+			<ImageBottomRight>
+				<img src="/src/assets/verde-bottom-left.svg" alt="" />
+			</ImageBottomRight>
 			<ContainerForm>
 				<Span 
 					style={{ 

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import SignIn from './pages/signIn';
+import SignUp from './pages/signUp';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<SignIn />
+		<SignUp />
 	</React.StrictMode>
 );
