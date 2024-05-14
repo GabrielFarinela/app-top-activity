@@ -4,14 +4,15 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 40px;
+    gap: 90px;
     align-items: center;
     height: calc(100vh - 81px);
     min-height: 820px;
     width: 100vw;
 
     @media (max-width: 1139.5px){
-      min-height: 1100px;
+      min-height: 1200px;
+      gap: 60px
     }
 `;
 
@@ -38,9 +39,13 @@ export const ContainerInputs = styled.div`
   display: flex; 
   flex-direction: column; 
   align-items: center;
-  gap: 40px; 
+  gap: 60px; 
   width: 525px;
   margin: 0 10px;
+
+  @media (min-width: 1600px) {
+    width: 700px;
+  }
 
   @media (max-width: 700px){
     width: 100%;
@@ -50,8 +55,12 @@ export const ContainerInputs = styled.div`
 export const ContainerInput = styled.div`
   display: flex; 
   flex-direction: column; 
-  gap: 30px; 
+  gap: 40px; 
   width: 525px;
+
+  @media (min-width: 1600px) {
+    width: 700px;
+  }
 
   @media (max-width: 700px){
     width: 100%;
