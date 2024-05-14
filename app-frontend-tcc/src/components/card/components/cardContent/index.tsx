@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Description } from "./styles";
+import React, { useState } from "react";
+import { Description, ContainerButton, ContainerImage } from "./styles";
+import Button from "../../../button";
+import Span from "../../../span";
 
 interface ICardContent {
    titulo: string;
@@ -9,70 +11,20 @@ interface ICardContent {
    data: Date;
 }
 
-const CardContent: React.FC<ICardContent> = () => {
-	const images = ["src/assets/img1.svg", "src/assets/img2.svg", "src/assets/img3.svg", "src/assets/img4.svg", "src/assets/img5.svg"];
+const CardContent: React.FC<ICardContent> = ({ titulo, subtitulo, valor, endereco, data }) => {
+	const [text] = useState("Fundada em 2018 pelo professor e cantor Jean Macedo, um apaixonado pela música com mais de 25 anos de experiência no ensino musical, a Fermata tem como objetivo proporcionar uma educação musical de excelência, em que cada estudante pode desenvolver suas habilidades e amor pela música. Fundada em 2018 pelo professor e cantor Jean Macedo, um apaixonado pela música com mais de 25 anos de experiência no ensino musical, a Fermata tem como objetivo proporcionar uma educação musical de excelência, em que cada estudante pode desenvolver suas habilidades e amor pela música. Fundada em 2018 pelo professor e cantor Jean Macedo, um apaixonado pela música com mais de 25 anos de experiência no ensino musical, a Fermata tem como objetivo proporcionar uma educação musical de excelência, em que cada estudante pode desenvolver suas habilidades e amor pela música. Fundada em 2018 pelo professor e cantor Jean Macedo, um apaixonado pela música com mais de 25 anos de experiência no ensino musical, a Fermata tem como objetivo proporcionar uma educação musical de excelência, em que cada estudante pode desenvolver suas habilidades e amor pela música.");
 
-	const [windowSize, setWindowSize] = useState({
-		width: window.innerWidth,
-		height: window.innerHeight
-	});
-	const [text] = useState("Fundada em 2018 pelo professor e cantor Jean Macedo, um apaixonado pela música com mais de 25 anos de experiência no ensino musical, a Fermata tem como objetivo proporcionar uma educação musical de excelência, em que cada estudante pode desenvolver suas habilidades e amor pela música.");
+	const [iconFavorite, setIconFavorite] = useState("favorite-clean");
+	const [modalOpen, setModalOpen] = useState(false);
 
-	useEffect(() => {
-		const handleResize = () => {
-			setWindowSize({
-				width: window.innerWidth,
-				height: window.innerHeight
-			});
-		};
-	
-		window.addEventListener('resize', handleResize);
-	
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
-	const [ iconFavorite, setIconFavorite ] = useState("favorite-clean");
-	const [ activeImageIndex, setActiveImageIndex ] = useState(0);
-	
-	const handleImageChange = (direction: string) => {
-		const imagesLength = images.length;
-		let newActiveImageIndex = activeImageIndex;
-			
-		if (direction === "next") {
-			if (activeImageIndex + 4 > imagesLength) {
-				newActiveImageIndex = 0;
-			} else {
-				newActiveImageIndex += 1;
-			}
-		}
-			
-		else if (direction === "prev") {
-			if (activeImageIndex === 0) {
-				newActiveImageIndex = imagesLength - 3;
-			} else {
-				newActiveImageIndex -= 1;
-			}
-		}
-			
-		setActiveImageIndex(newActiveImageIndex);
-	};
-
-	const quantasMostrar = (act: number) => {
-		if(windowSize.width > 1200)
-			return act + 3;
-		else if(windowSize.width <= 600)
-			return act + 1;
-		else if(windowSize.width <= 1200)
-			return act + 2;
-	};
+	const images = ["src/assets/img1.svg", "src/assets/img2.svg", "src/assets/img3.svg", "src/assets/img4.svg", "src/assets/img5.svg","src/assets/img1.svg", "src/assets/img2.svg", "src/assets/img3.svg", "src/assets/img4.svg", "src/assets/img5.svg"];
+	// const images: [] = [];
 
 	return (
-		<div style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
-			<div style={{ margin: "20px 20px 0px 20px", display: "flex", flexDirection: "column", gap: "15px" }}>
-				<div style={{ display: "flex", justifyContent: "space-between" }}>
-					<span style={{ color: "white", fontSize: "1.5rem" }}>Festa da uva - R$ 299,90</span>
+		<div style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between", alignItems: "center" }}>
+			<div style={{ margin: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
+				<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+					<span title={`${titulo} - R$ ${valor}`} style={{ color: "white", fontSize: "1.5rem" }}>{titulo} - R$ {valor}</span>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<a href="">
 							<button style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}>
@@ -89,36 +41,58 @@ const CardContent: React.FC<ICardContent> = () => {
 						</button>
 					</div>
 				</div>
-				<div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-					<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-						<span style={{ fontSize: "0.875rem", color: "#8D8D99" }}>24/03/2024 - 15h</span>
-						<span style={{ fontSize: "0.875rem", color: "#8D8D99" }}>R. Ludovíco Cavinato, 1431 - Nossa Sra. da Saúde, Caxias do Sul - RS, 95032-620</span>
-					</div>
-					<Description>
-						{text}
-					</Description>
+				<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+					<span title={subtitulo} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{data.toLocaleDateString()} - {subtitulo}</span>
+					<span title={endereco} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{endereco}</span>
+					<span title="#FESTIVAL, #FESTA" style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#FESTIVAL, #FESTA</span>
 				</div>
+				<Description>
+					{text}
+				</Description>
 			</div>
-			<div style={{ marginBottom: "20px", width: "100%" }}>
-				<div style={{ display: `${windowSize.width <= 350 ? "none" : "flex"}`, justifyContent: "center", alignItems: "center" }}>
-					<button onClick={() => handleImageChange("prev")} style={{ cursor: "pointer", border: "0", backgroundColor: "transparent", marginRight: "10px" }}>
-						<img src="src/assets/buttonLeft.svg" alt="" />
-					</button>
-					<div style={{ display: "flex", gap: "20px" }}>
-						{images.slice(activeImageIndex, quantasMostrar(activeImageIndex)).map((x, index) => (
-							<div key={`${x}-${index}`}>
-								<img style={{ borderRadius: "8px" }} src={x} alt="" />
-							</div>
-						))}
+			<ContainerButton>
+				<Button type="button" onClick={() => setModalOpen(true)}>Ver fotos</Button>
+			</ContainerButton>
+			{modalOpen && (
+				<div style={{
+					position: "fixed",
+					top: 0,
+					left: 0,
+					width: "100%",
+					height: "100%",
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					backgroundColor: "rgba(0, 0, 0, 0.5)",
+					zIndex: 9999
+				}}>
+					<div style={{
+						backgroundColor: "#202024",
+						border: "1px solid black",
+						boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+						padding: "20px",
+						borderRadius: "8px",
+						maxWidth: "80%",
+						overflow: "hidden",
+						maxHeight: "80%",
+					}}>
+						<ContainerImage style={{ overflow: `${images && images.length > 0 ? "auto" : "hidden"}`}}>
+							{images && images.length > 0 ? (
+								<>
+									{images.map((image, index) => (
+										<img key={index} src={image} alt={`Imagem ${index}`} style={{ width: "100%", marginBottom: "10px", borderRadius: "8px", border: "2px solid #000" }} />
+									))}
+								</>
+							) : (
+								<Span style={{ margin: "20px", textDecoration: "underline", userSelect: "none" }} color="white" size="20px">SEM IMAGENS</Span>
+							)}
+						</ContainerImage>
+						<div style={{ marginTop: "10px" }}>
+							<Button type="button" onClick={() => setModalOpen(false)}>Fechar</Button>
+						</div>
 					</div>
-					<button onClick={() => handleImageChange("next")} style={{ cursor: "pointer", border: "0", backgroundColor: "transparent", marginLeft: "10px" }}>
-						<img src="src/assets/buttonRight.svg" alt="" />
-					</button>
 				</div>
-				{windowSize.width >= 193 && (
-					<div style={{ display: `${windowSize.width <= 350 ? "flex" : "none"}`, color: "#8D8D99", fontStyle: "italic", fontSize: "0.75rem", textAlign: "center", margin: "30px" }}>Aumente o tamanho da tela para ver as imagens</div>
-				)}
-			</div>
+			)}
 		</div>
 	);
 };

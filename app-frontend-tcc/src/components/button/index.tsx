@@ -4,15 +4,17 @@ import StyledButton from './styles';
 export interface IButton{
    children: ReactNode;
 	type: "button" | "submit" | "reset" | undefined
+	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 const Button: React.FC<IButton> = ({
 	children,
-	type
+	type,
+	onClick
 
 }) => {
 	return (
-		<StyledButton type={type}>
+		<StyledButton onClick={onClick} type={type}>
 			{children}
 		</StyledButton>
 	);

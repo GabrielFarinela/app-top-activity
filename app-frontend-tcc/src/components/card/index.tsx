@@ -26,8 +26,8 @@ const Card: React.FC<ICard> = ({
 
 }) => {
 	return (
-		<Container className='container'>
-			<Row className='1-row'>
+		<Container>
+			<Row>
 				<FlexBox 
 					styleinline="@media (max-width: 1400px) { width: 10%; }
                             @media (max-width: 900px) { display: none; }" 

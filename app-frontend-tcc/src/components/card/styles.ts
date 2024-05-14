@@ -6,7 +6,7 @@ export const Container = styled.div`
    justify-content: center;
    align-items: center;
    height: calc(100vh - 81px);
-   min-height: 920px;
+   min-height: 800px;
    width: 100vw;
 `;
 
@@ -34,7 +34,7 @@ export const Box = styled.div<BoxProps>`
    width: ${({ width }) => width};
    height: ${({ height }) => height};
    border-radius: 8px;
-   min-height: 450px;
+   min-height: 380px;
    ${({ styleinline }) => styleinline};
 `;
 

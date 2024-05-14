@@ -42,11 +42,10 @@ const MyProfile: React.FC = () => {
 							<InputArea label="Bio"/>
 						</ContainerInput>
 					</ContainerInputs>
-					{/* <HR /> */}
 					<ContainerInputs>
 						<Span color="white" size="25px">Opções de busca</Span>
 						<ContainerInput>
-							<Input label="Buscar evento" type="text"/>
+							<Input placeholder="#PROGRAMAÇÃO, #CORRIDA" label="Tag" type="text"/>
 							<InputData label="Data início"/>
 							<InputData label="Data fim"/>
 							<InputRange label="Distância" tipo="km" max={300} onChange={(e) => setValue(e)} value={value}/>
