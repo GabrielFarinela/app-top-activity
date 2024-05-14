@@ -72,7 +72,7 @@ export const SidebarItem = styled(Link)`
 `;
 
 export const SidebarButton = styled.button`
-   position: fixed;
+   position: absolute;
    top: 15px;
    left: 20px;
    padding: 10px 20px;
