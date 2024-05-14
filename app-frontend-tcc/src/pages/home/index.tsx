@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Header } from '../signIn/styles';
 import Span from '../../components/span';
 import Card from '../../components/card';
+import CardContent from '../../components/card/components/cardContent';
 
 const Home: React.FC = () => {
+	const card = useMemo(() => {
+		return <CardContent 
+			data={new Date} 
+			endereco="rua josé rizzo, 447"
+			subtitulo="subtitulo teste"
+			titulo="titulo teste"
+			valor="399"
+		/>;
+	}, []);
+
+	const card2 = useMemo(() => {
+		return <CardContent 
+			data={new Date} 
+			endereco="rua josé rizzo, 447"
+			subtitulo="subtitulo teste"
+			titulo="titulo teste"
+			valor="399"
+		/>;
+	}, []);
+
 	return (
 		<>
 			<Header>
@@ -16,32 +37,12 @@ const Home: React.FC = () => {
 					color="#8D8D99" 
 					size="20px"
 				>
-					Home
+					Página inicial
 				</Span>
 			</Header>
 			<Card 
-				children={
-					// <CardContent 
-					// 	data={new Date} 
-					// 	endereco="rua josé rizzo, 447"
-					// 	fotos={["foto1","foto2","foto3","foto4"]}
-					// 	subtitulo="subtitulo teste"
-					// 	titulo="titulo teste"
-					// 	valor="399"
-					// />
-					<></>
-				} 
-				children2={
-					// <CardContent 
-					// 	data={new Date} 
-					// 	endereco="rua josé rizzo, 447"
-					// 	fotos={["foto1","foto2","foto3","foto4"]}
-					// 	subtitulo="subtitulo teste"
-					// 	titulo="titulo teste"
-					// 	valor="399"
-					// />
-					<></>
-				}
+				children={card} 
+				children2={card2}
 			/>
 		</>
 	);

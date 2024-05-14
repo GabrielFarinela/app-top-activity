@@ -6,7 +6,7 @@ export const Container = styled.div`
    justify-content: center;
    align-items: center;
    height: calc(100vh - 81px);
-   min-height: 700px;
+   min-height: 920px;
    width: 100vw;
 `;
 
@@ -24,7 +24,7 @@ interface BoxProps {
    height: string;
    position: string;
    border: string;
-   styleInline?: string;
+   styleinline?: string;
 }
 
 export const Box = styled.div<BoxProps>`
@@ -34,12 +34,12 @@ export const Box = styled.div<BoxProps>`
    width: ${({ width }) => width};
    height: ${({ height }) => height};
    border-radius: 8px;
-   min-height: 300px;
-   ${({ styleInline }) => styleInline};
+   min-height: 450px;
+   ${({ styleinline }) => styleinline};
 `;
 
 interface CustomDivProps {
-   positionScreen: string;
+   positionscreen: string;
  }
 
 export const ButtonNext = styled.div<CustomDivProps>`
@@ -50,7 +50,7 @@ export const ButtonNext = styled.div<CustomDivProps>`
    background-color: #202024;
    width: 60px;
    height: 60px;
-   ${({ positionScreen }) => (positionScreen)};
+   ${({ positionscreen }) => (positionscreen)};
 
    &:hover {
       opacity: 0.5;

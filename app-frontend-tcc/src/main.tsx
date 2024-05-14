@@ -7,6 +7,8 @@ import SignIn from './pages/signIn';
 import SignUp from './pages/signUp';
 import NotFound from './pages/notFound';
 import Layout from './shared/layout';
+import MyProfile from './pages/myProfile';
+import Favorites from './pages/favorites';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
@@ -18,6 +20,8 @@ const router = createBrowserRouter([
 			{ path: '/', element: <Home /> },
 			{ path: '/signIn', element: <SignIn /> },
 			{ path: '/signUp', element: <SignUp /> },
+			{ path: '/my-profile', element: <MyProfile /> },
+			{ path: '/favorites', element: <Favorites /> },
 		],
 	},
 	{

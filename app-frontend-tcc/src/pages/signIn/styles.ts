@@ -24,6 +24,10 @@ export const ImageBottomRight = styled.div`
    @media (max-width: 1050px) {
       display: none;
    }
+
+   @media (max-height: 890px) {
+      display: none;
+   }
 `;
 
 export const ImageTopLeft = styled.div`
@@ -34,6 +38,10 @@ export const ImageTopLeft = styled.div`
    @media (max-width: 1050px) {
       display: none;
    }
+
+   @media (max-height: 890px) {
+      display: none;
+   }  
 `;
 
 export const Header = styled.div`

@@ -8,7 +8,7 @@ interface FlexBoxProps {
   children?: ReactNode;
   position?: string;
   border?: string;
-  styleInline?: string;
+  styleinline?: string;
 }
 
 interface ICard {
@@ -16,8 +16,8 @@ interface ICard {
 	children2: ReactNode;
 }
 
-const FlexBox: React.FC<FlexBoxProps> = ({ transparent, width, height, children, position, border, styleInline }) => (
-	<Box styleInline={styleInline ?? ""} border={border ?? ""} position={position ?? ""} transparent={transparent} width={width} height={height}>{children}</Box>
+const FlexBox: React.FC<FlexBoxProps> = ({ transparent, width, height, children, position, border, styleinline }) => (
+	<Box styleinline={styleinline ?? ""} border={border ?? ""} position={position ?? ""} transparent={transparent} width={width} height={height}>{children}</Box>
 );
 
 const Card: React.FC<ICard> = ({
@@ -29,14 +29,14 @@ const Card: React.FC<ICard> = ({
 		<Container className='container'>
 			<Row className='1-row'>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 10%; }
+					styleinline="@media (max-width: 1400px) { width: 10%; }
                             @media (max-width: 900px) { display: none; }" 
 					transparent="transparent" 
 					width="20%" 
 					height="80%" 
 				/>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 80%; }
+					styleinline="@media (max-width: 1400px) { width: 80%; }
                             @media (max-width: 900px) { width: 100%; }" 
 					border="1px solid #000" 
 					transparent="#202024"
@@ -44,7 +44,7 @@ const Card: React.FC<ICard> = ({
 					height="80%" 
 				>{children}</FlexBox>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 10%; }
+					styleinline="@media (max-width: 1400px) { width: 10%; }
                             @media (max-width: 900px) { display: none; }" 
 					position="relative" 
 					transparent="transparent" 
@@ -52,7 +52,7 @@ const Card: React.FC<ICard> = ({
 					height="80%" 
 				>
 					<ButtonNext 
-						positionScreen="bottom: 0" 
+						positionscreen="bottom: 0" 
 					>
 						<div style={{
 							display: "flex",
@@ -67,14 +67,14 @@ const Card: React.FC<ICard> = ({
 			</Row>
 			<Row className='2-row'>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 10%; }
+					styleinline="@media (max-width: 1400px) { width: 10%; }
                             @media (max-width: 900px) { display: none; }" 
 					transparent="transparent" 
 					width="20%" 
 					height="80%" 
 				/>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 80%; }
+					styleinline="@media (max-width: 1400px) { width: 80%; }
                             @media (max-width: 900px) { width: 100%; }" 
 					border="1px solid #000" 
 					transparent="#202024" 
@@ -82,7 +82,7 @@ const Card: React.FC<ICard> = ({
 					height="80%" 
 				>{children2}</FlexBox>
 				<FlexBox 
-					styleInline="@media (max-width: 1400px) { width: 10%; }
+					styleinline="@media (max-width: 1400px) { width: 10%; }
                             @media (max-width: 900px) { display: none; }" 
 					position="relative" 
 					transparent="transparent" 
@@ -90,7 +90,7 @@ const Card: React.FC<ICard> = ({
 					height="80%" 
 				>
 					<ButtonNext 
-						positionScreen="top: 0"
+						positionscreen="top: 0"
 					>
 						<div style={{
 							display: "flex",
