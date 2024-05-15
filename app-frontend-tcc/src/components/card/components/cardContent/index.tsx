@@ -24,7 +24,7 @@ const CardContent: React.FC<ICardContent> = ({ titulo, subtitulo, valor, enderec
 		<div style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between", alignItems: "center" }}>
 			<div style={{ margin: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
 				<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-					<span title={`${titulo} - R$ ${valor}`} style={{ color: "white", fontSize: "1.5rem" }}>{titulo} - R$ {valor}</span>
+					<span title={`${titulo} - R$ ${valor}`} style={{ color: "white", fontSize: "1.5rem" }}>{titulo} - R$ {valor} (<span title="#FESTIVAL, #FESTA" style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#FESTIVAL, #FESTA</span>)</span>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<a href="">
 							<button style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}>
@@ -44,7 +44,6 @@ const CardContent: React.FC<ICardContent> = ({ titulo, subtitulo, valor, enderec
 				<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 					<span title={subtitulo} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{data.toLocaleDateString()} - {subtitulo}</span>
 					<span title={endereco} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{endereco}</span>
-					<span title="#FESTIVAL, #FESTA" style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#FESTIVAL, #FESTA</span>
 				</div>
 				<Description>
 					{text}

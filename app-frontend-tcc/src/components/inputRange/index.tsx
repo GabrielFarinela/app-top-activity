@@ -44,7 +44,7 @@ const RangeInput = styled.input`
 
 const Label = styled.label`
   position: absolute;
-  top: -20px;
+  top: -16px;
   left: 0;
   color: #8D8D99;
   font-size: 13px;
