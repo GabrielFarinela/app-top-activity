@@ -72,7 +72,8 @@ const CardContent: React.FC<ICardContent> = ({ titulo, subtitulo, valor, enderec
 						boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
 						padding: "20px",
 						borderRadius: "8px",
-						maxWidth: "80%",
+						width: "80%",
+						maxWidth: "900px",
 						overflow: "hidden",
 						maxHeight: "80%",
 					}}>

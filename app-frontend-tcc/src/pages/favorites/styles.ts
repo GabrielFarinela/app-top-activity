@@ -25,7 +25,6 @@ export const Card = styled.div`
   background-color: #202024;
   border: 1px solid #000;
   border-radius: 5px;
-  cursor: pointer;
 
   &:hover{
   }

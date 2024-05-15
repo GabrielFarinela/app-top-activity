@@ -23,7 +23,7 @@ export const ContainerImage = styled.div`
 
   &::-webkit-scrollbar {
     width: 12px;
-    height: 5px;
+    height: 10px;
   }
 
   &::-webkit-scrollbar-track {
