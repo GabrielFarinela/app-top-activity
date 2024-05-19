@@ -11,10 +11,6 @@ const saveUser = async (queryUser) => {
    database.disconnect()
 }
 
-const userCOntroller = {
-   saveUser
-}
-
 export default {
-     userCOntroller
+   saveUser
 }
