@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-interface SidebarContainerProps {
-   isopen: boolean;
-}  
-
-export const SidebarContainer = styled.aside<SidebarContainerProps>`
+export const SidebarContainer = styled.aside<{ isopen: string }>`
    position: fixed;
    top: 0;
-   left: ${props => (props.isopen ? '0' : '-100%')};
+   left: ${props => (props.isopen === "S" ? '0' : '-100%')};
    width: 400px;
    height: 100vh;
    background-color: #202024;
@@ -20,7 +16,7 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
    border-radius: 0 8px 8px 0;
 
    @media (max-width: 400px) {
-      ${props => (props.isopen ? 'width: 100%' : 'width: 0%')};
+      ${props => (props.isopen === "S" ? 'width: 100%' : 'width: 0%')};
    }
 `;
 
