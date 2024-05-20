@@ -25,31 +25,6 @@ const Home: React.FC = () => {
 		/>;
 	}, []);
 
-	const apiEndpoint = 'http://localhost:3000/api/user';
-	const itemData = {
-		"nome": "GuiIIIII",
-		"username": "DSASDG",
-		"senha": "DSAADSDS"
-	};
-
-	fetch(apiEndpoint, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(itemData)
-	})
-		.then(response => {
-			if (response.status >= 200 && response.status < 300) {
-				console.log('Item inserted successfully!');
-			} else {
-				console.error('Error inserting item:', response.status);
-			}
-		})
-		.catch(error => {
-			console.error('Fetch error:', error);
-		});
-
 	return (
 		<>
 			<Header>

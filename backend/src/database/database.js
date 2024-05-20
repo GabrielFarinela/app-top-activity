@@ -12,8 +12,7 @@ const connect = async () => {
     console.log("Conectado ao MongoDB");
   } catch (error) {
     console.error("Erro ao conectar ao MongoDB:", error);
-    // Envie uma resposta de erro (por exemplo, status 500)
-    throw error; // Repasse o erro para ser tratado na rota
+    throw error;
   }
 };
 
