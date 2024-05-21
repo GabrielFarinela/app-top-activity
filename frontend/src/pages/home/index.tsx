@@ -5,6 +5,7 @@ import Card from '../../components/card';
 import CardContent from '../../components/card/components/cardContent';
 
 const Home: React.FC = () => {
+
 	const card = useMemo(() => {
 		return <CardContent 
 			data={new Date} 

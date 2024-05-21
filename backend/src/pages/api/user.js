@@ -11,33 +11,32 @@ export default async function handler(req, res) {
 
   switch (req.method) {
     case 'GET':
-      if (!req.params.id) { 
-        try {
-          const usuarios = await UserController.getAllUsers();
-          res.status(200).json(usuarios);
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: 'Erro ao buscar usuários' });
+      try {
+        const { email, senha } = req.query;
+    
+        if (!email || !senha) {
+          return res.status(400).json({ message: 'Email e Senha são obrigatórios' });
         }
-      } else { 
-        const userId = req.params.id;
-        try {
-          const usuario = await UserController.getUserById(userId);
-          if (!usuario) {
-            res.status(404).json({ message: 'Usuário não encontrado' });
-            return;
-          }
-          res.status(200).json(usuario);
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: 'Erro ao buscar usuário' });
+
+        const user = await UserController.selectByEmailAndPassword(email, senha);
+    
+        if (!user) {
+          return res.status(404).json({ message: 'Usuário não encontrado' });
         }
-      }
+    
+        res.status(200).json(user);
+
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Usuário não encontrado' });
+      } 
       break;
     case 'POST':
       try {
         const usuarioSalvo = await UserController.saveUser(req.body);
+
         res.status(201).json(usuarioSalvo);
+
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro interno do servidor' });

@@ -12,7 +12,6 @@ const StyledInput = styled.input`
     color: white;
     padding: 10px;
     position: relative;
-    text-transform: uppercase;
 `;
 
 const StyledLabel = styled.label`

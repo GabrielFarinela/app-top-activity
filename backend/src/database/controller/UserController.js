@@ -7,10 +7,21 @@ const saveUser = async (queryUser) => {
    const newUser = new User(queryUser)
 
    return await newUser.save()
-
-   database.disconnect()
 }
 
+const selectByEmailAndPassword = async (email, password) => {
+  if (!database.connect()) return false;
+
+  const user = await User.findOne({ email, password });
+
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
+
+  return user;
+};
+
 export default {
-   saveUser
+   saveUser,
+   selectByEmailAndPassword
 }
