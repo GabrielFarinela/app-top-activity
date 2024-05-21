@@ -9,6 +9,8 @@ import NotFound from './pages/notFound';
 import Layout from './shared/layout';
 import MyProfile from './pages/myProfile';
 import Favorites from './pages/favorites';
+import { PrivateRoute } from './shared/routes/privateRoute';
+import { PublicRoute } from './shared/routes/publicRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
@@ -17,11 +19,26 @@ const router = createBrowserRouter([
 		path: '/',
 		element: <Layout />,
 		children: [
-			{ path: '/', element: <Home /> },
-			{ path: '/signIn', element: <SignIn /> },
-			{ path: '/signUp', element: <SignUp /> },
-			{ path: '/my-profile', element: <MyProfile /> },
-			{ path: '/favorites', element: <Favorites /> },
+			{ 
+				path: '/signIn', 
+				element: <PublicRoute path="/my-profile" element={<SignIn />} />, 
+			},
+			{ 
+				path: '/signUp', 
+				element: <PublicRoute path="/my-profile" element={<SignUp />} />, 
+			},
+			{ 
+				path: '/', 
+				element: <PrivateRoute path="/my-profile" element={<Home />} />, 
+			},
+			{
+				path: '/my-profile',
+				element: <PrivateRoute path="/my-profile" element={<MyProfile />} />,
+			},
+			{
+				path: '/favorites',
+				element: <PrivateRoute path="/favorites" element={<Favorites />} />,
+			},
 		],
 	},
 	{
@@ -29,7 +46,7 @@ const router = createBrowserRouter([
 		element: <NotFound />,
 	},
 ]);
-	
+
 root.render(
 	<React.StrictMode>
 		<RouterProvider router={router} />
