@@ -8,6 +8,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Loading from '../../shared/loading';
 import { useToast } from '../../context/ToastContext';
+// import Checkbox from '../../components/checkbox';
 
 interface SignInProps {} 
 
@@ -67,7 +68,7 @@ const SignIn: React.FC<SignInProps> = () => {
 				resetForm();
 				setErrorEmail(true);
 				setErrorSenha(true);	
-				showToast('Usuário e senha não conferem!', '#E74646');
+				showToast('Usuário e/ou senha estão incorretos!', '#E74646');
 			}
 		} catch (error) {
 			console.log(error);

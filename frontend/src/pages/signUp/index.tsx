@@ -98,7 +98,8 @@ const SignUp: React.FC<SignUpProps> = () => {
 
 			const user = await findUser(email, senha);
 
-			if(user){
+			if(user && user.email && user.email.length > 0){
+				console.log("entrou");
 				showToast('Ja existe um usuário com este email!', '#FFBF00');
 				resetForm();
 				return;

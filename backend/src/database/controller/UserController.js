@@ -14,10 +14,6 @@ const selectByEmailAndPassword = async (email, password) => {
 
   const user = await User.findOne({ email, password });
 
-  if (!user) {
-    throw new Error("Usuário não encontrado");
-  }
-
   return user;
 };
 
