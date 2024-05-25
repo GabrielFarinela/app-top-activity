@@ -60,6 +60,7 @@ export const Header = styled.div`
 `;
 
 export const ContainerForm = styled.div`
+   position: relative;
    width: 700px;
    min-height: 800px;
    height: 85%;

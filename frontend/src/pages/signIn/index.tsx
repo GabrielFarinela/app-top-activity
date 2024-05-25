@@ -6,16 +6,20 @@ import Span from '../../components/span';
 import Grid from '../../components/grid';
 import { Form, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-// import Checkbox from '../../components/checkbox';
+import Loading from '../../shared/loading';
+import { useToast } from '../../context/ToastContext';
 
 interface SignInProps {} 
 
 const SignIn: React.FC<SignInProps> = () => {
 	const navigate = useNavigate(); 
+	const { showToast } = useToast();
 
 	const [email, setEmail] = useState("");
 	const [senha, setSenha] = useState("");
-	const [error, setError] = useState(false);
+	const [errorSenha, setErrorSenha] = useState(false);
+	const [errorEmail, setErrorEmail] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const findUser = async (email: string, senha: string) => {
 		try {
@@ -28,20 +32,47 @@ const SignIn: React.FC<SignInProps> = () => {
 		}
 	};
 
+	const resetForm = () => {
+		setEmail("");
+		setSenha("");
+	};
+
 	const onSubmit = async () => {
 		try {
+			if(email.length === 0){
+				showToast('Insira um email válido!', '#E74646');
+				setErrorEmail(true);
+				return;
+			} else {
+				setErrorEmail(false);
+			}
+
+			if(senha.length === 0){
+				showToast('Insira uma senha válida!', '#E74646');
+				setErrorSenha(true);
+				return;
+			} else {
+				setErrorSenha(false);
+			}
+
+			setLoading(true);
 			const user = await findUser(email, senha);
 			
 			if(user && user.email && user.email.length > 0 && user.senha.length > 0){
 				Cookies.set('user_email', user.email);
 				Cookies.set('user_senha', user.senha);
 				navigate("/");
+				showToast(`Seja bem vindo de volta ${user.nome}`, '#00875F');
 			} else {
-				setError(true);	
-				navigate("/signIn");
+				resetForm();
+				setErrorEmail(true);
+				setErrorSenha(true);	
+				showToast('Usuário e senha não conferem!', '#E74646');
 			}
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -67,31 +98,37 @@ const SignIn: React.FC<SignInProps> = () => {
 				<img src="/src/assets/verde-bottom-right.svg" alt="" />
 			</ImageBottomRight>
 			<ContainerForm>
-				<Span 
-					style={{ 
-						display: "flex", 
-						justifyContent: "center" 
-					}} 
-					color="#fff" 
-					size="32px"
-				>
+				<>
+					{loading ? (<Loading/>) : (
+						<>
+							<Span 
+								style={{ 
+									display: "flex", 
+									justifyContent: "center" 
+								}} 
+								color="#fff" 
+								size="32px"
+							>
 						Entrar
-				</Span>
-				<Form style={{ display: "flex", flexDirection: "column", gap: "50px" }} onSubmit={onSubmit}>
-					<Grid style={{ boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "50px" }}>
-						<Input error={error} onChange={(e) => setEmail(e.target.value)} type="email" value={email} label="Email"/>
-						<Grid style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-							<Input error={error} onChange={(e) => setSenha(e.target.value)} value={senha} type="password" label="Senha"/>
-							{/* <Checkbox labelText="Matenha-me conectado" /> */}
-						</Grid>
-					</Grid>
-					<Grid style={{ marginTop: "0px" }}>
-						<Button type="submit">Entrar</Button>
-						<Grid style={{ display: "flex", gap: "5px", marginTop: "20px" }}>
-							<Span color="#fff" size="14px">Não tem uma conta?<span onClick={() => navigate("/signUp")} style={{ textDecoration: "underline", cursor: "pointer", color: "#fff", marginLeft: "5px" }}>Cadastre-se clicando aqui</span></Span>
-						</Grid>
-					</Grid>
-				</Form>
+							</Span>
+							<Form style={{ display: "flex", flexDirection: "column", gap: "50px" }} onSubmit={onSubmit}>
+								<Grid style={{ boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "50px" }}>
+									<Input error={errorEmail} onChange={(e) => setEmail(e.target.value)} type="email" value={email} label="Email"/>
+									<Grid style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+										<Input error={errorSenha} onChange={(e) => setSenha(e.target.value)} value={senha} type="password" label="Senha"/>
+										{/* <Checkbox labelText="Matenha-me conectado" /> */}
+									</Grid>
+								</Grid>
+								<Grid style={{ marginTop: "0px" }}>
+									<Button type="submit">Entrar</Button>
+									<Grid style={{ display: "flex", gap: "5px", marginTop: "20px" }}>
+										<Span color="#fff" size="14px">Não tem uma conta?<span onClick={() => navigate("/signUp")} style={{ textDecoration: "underline", cursor: "pointer", color: "#fff", marginLeft: "5px" }}>Cadastre-se clicando aqui</span></Span>
+									</Grid>
+								</Grid>
+							</Form>
+						</>
+					)}
+				</>
 			</ContainerForm>
 		</Container>
 	);

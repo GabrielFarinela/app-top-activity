@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Box, ButtonNext, Container, Row } from './styles';
+import { searchGoogle } from '../../shared/google/searchGoogle';
 
 interface FlexBoxProps {
   transparent: string;
@@ -25,6 +26,20 @@ const Card: React.FC<ICard> = ({
 	children2
 
 }) => {
+	const [index,setIndex] = useState<number>(1);
+
+	const buscarDados = (search: string, start: number) => {
+		searchGoogle(search, start)
+			.then((data) => {
+				if (data) {
+					console.log('Search results:', data);
+				}
+			})
+			.catch((error) => {
+				console.error('Error during search:', error);
+			});
+	};
+	
 	return (
 		<Container>
 			<Row>
@@ -91,6 +106,10 @@ const Card: React.FC<ICard> = ({
 				>
 					<ButtonNext 
 						positionscreen="top: 0"
+						onClick={() => {
+							setIndex((prev) => prev + 10);
+							buscarDados("Eventos no brasil", index);
+						}}
 					>
 						<div style={{
 							display: "flex",

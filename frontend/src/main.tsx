@@ -11,6 +11,7 @@ import MyProfile from './pages/myProfile';
 import Favorites from './pages/favorites';
 import { PrivateRoute } from './shared/routes/privateRoute';
 import { PublicRoute } from './shared/routes/publicRoute';
+import ToastProvider from './context/ToastContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
@@ -21,15 +22,15 @@ const router = createBrowserRouter([
 		children: [
 			{ 
 				path: '/signIn', 
-				element: <PublicRoute path="/my-profile" element={<SignIn />} />, 
+				element: <PublicRoute path="/signIn" element={<SignIn />} />, 
 			},
 			{ 
 				path: '/signUp', 
-				element: <PublicRoute path="/my-profile" element={<SignUp />} />, 
+				element: <PublicRoute path="/signUp" element={<SignUp />} />, 
 			},
 			{ 
 				path: '/', 
-				element: <PrivateRoute path="/my-profile" element={<Home />} />, 
+				element: <PrivateRoute path="/" element={<Home />} />, 
 			},
 			{
 				path: '/my-profile',
@@ -49,6 +50,8 @@ const router = createBrowserRouter([
 
 root.render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<ToastProvider>
+			<RouterProvider router={router} />
+		</ToastProvider>
 	</React.StrictMode>
 );

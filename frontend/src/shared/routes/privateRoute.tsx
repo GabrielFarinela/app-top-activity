@@ -11,8 +11,6 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
 	const userEmail = Cookies.get('user_email');
 	const userSenha = Cookies.get('user_senha');
 
-	console.log(userEmail);
-
 	if ((!userEmail || userEmail.length === 0) && (!userSenha || userSenha.length === 0)) {
 		return <Navigate to="/signIn" />;
 	}
