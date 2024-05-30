@@ -1,6 +1,5 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { Box, ButtonNext, Container, Row } from './styles';
-import { searchGoogle } from '../../shared/google/searchGoogle';
 
 interface FlexBoxProps {
   transparent: string;
@@ -15,6 +14,9 @@ interface FlexBoxProps {
 interface ICard {
 	children: ReactNode;
 	children2: ReactNode;
+	handlePreviousPage: () => void;
+	handleNextPage: () => void;
+	setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FlexBox: React.FC<FlexBoxProps> = ({ transparent, width, height, children, position, border, styleinline }) => (
@@ -23,23 +25,11 @@ const FlexBox: React.FC<FlexBoxProps> = ({ transparent, width, height, children,
 
 const Card: React.FC<ICard> = ({
 	children,
-	children2
+	children2,
+	handleNextPage,
+	handlePreviousPage
 
 }) => {
-	const [index,setIndex] = useState<number>(1);
-
-	const buscarDados = (search: string, start: number) => {
-		searchGoogle(search, start)
-			.then((data) => {
-				if (data) {
-					console.log('Search results:', data);
-				}
-			})
-			.catch((error) => {
-				console.error('Error during search:', error);
-			});
-	};
-	
 	return (
 		<Container>
 			<Row>
@@ -68,6 +58,9 @@ const Card: React.FC<ICard> = ({
 				>
 					<ButtonNext 
 						positionscreen="bottom: 0"
+						onClick={() => {
+							handlePreviousPage();
+						}}
 					>
 						<div style={{
 							display: "flex",
@@ -107,8 +100,7 @@ const Card: React.FC<ICard> = ({
 					<ButtonNext 
 						positionscreen="top: 0"
 						onClick={() => {
-							setIndex((prev) => prev + 10);
-							buscarDados("Eventos no brasil", index);
+							handleNextPage();
 						}}
 					>
 						<div style={{
