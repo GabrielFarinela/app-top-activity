@@ -7,6 +7,7 @@ const LogOut: React.FC = () => {
 		onClick={() => {
 			Cookies.remove('user_email');
 			Cookies.remove('user_senha');
+			// localStorage.removeItem('eventos');
 		}} 
 		href="/signIn">
 		<Logout>Sair</Logout>

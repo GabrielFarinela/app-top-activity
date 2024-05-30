@@ -40,7 +40,7 @@ export async function SearchGemini() {
 		safetySettings,
 	});
 	
-	const result = await chatSession.sendMessage("Gemini, preciso da sua ajuda para encontrar eventos legais de todos os gêneros no Brasil em 2024 a partir da data atual. Liste para mim 50 eventos com as seguintes informações, titulo do evento, descrição do evento, data do evento e local do evento, link do evento, termo de pesquisa que você pode usar em sites de busca de imagens como o Google Images");
+	const result = await chatSession.sendMessage("Gemini, preciso da sua ajuda para encontrar eventos que vão acontecer em farroupilha, rio grande do sul e região em 2024. Liste para mim 40 eventos de forma aleatória com as seguintes informações, titulo do evento, descrição do evento bem detalhada com minimo de 400 caracteres, data do evento e local do evento, link do evento, tag que indique sobre o que é o evento, termo para que eu busque por imagens sobre este evento na api do google search");
 	const text = result.response.text();
 
 	return JSON.parse(text);

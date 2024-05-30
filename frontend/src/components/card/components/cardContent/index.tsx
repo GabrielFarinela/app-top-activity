@@ -5,6 +5,8 @@ import { Description, ContainerButton, ContainerImage } from "./styles";
 import Button from "../../../button";
 import Span from "../../../span";
 import Loading from "../../../../shared/loading";
+import { format } from "date-fns";
+import { searchImages } from "../../../../shared/google/searchImages";
 
 interface ICardContent {
 	dataCard: any;
@@ -14,18 +16,34 @@ interface ICardContent {
 const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 	const [iconFavorite, setIconFavorite] = useState("favorite-clean");
 	const [modalOpen, setModalOpen] = useState(false);
+	const [images, setImages] = useState<any[]>([]);
 
-	const images = ["src/assets/img1.svg", "src/assets/img2.svg", "src/assets/img3.svg", "src/assets/img4.svg", "src/assets/img5.svg","src/assets/img1.svg", "src/assets/img2.svg", "src/assets/img3.svg", "src/assets/img4.svg", "src/assets/img5.svg"];
+	const formatDate = (dt: string) => {
+		const date = new Date(dt);
+		return format(date, 'dd/MM/yyyy') ?? "";
+	};
+
+	const fetchImages = async () => {
+		const response = await searchImages(dataCard[0].termo_busca_imagem);
+		
+		const imagesFetched: any[] = [];
+		response?.map((item: any) => {
+			imagesFetched.push(item.link);
+		});
+		setImages(imagesFetched);
+
+		setModalOpen(true);
+	};
 
 	return (
-		<div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between", alignItems: "center" }}>
+		<div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between"}}>
 			{dataCard ? (
 				<>
 					<div style={{ margin: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
 						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-							<span title={`${dataCard && dataCard.title ? dataCard.title : ""}`} style={{ color: "white", fontSize: "1.5rem" }}>{dataCard && dataCard.title ? dataCard.title : ""}(<span title="#..." style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#...</span>)</span>
+							<span title={`${dataCard.length > 0 && dataCard[0].titulo}`} style={{ color: "white", fontSize: "1.5rem" }}>{dataCard.length > 0 && dataCard[0].titulo} - (<span title={`#${dataCard.length > 0 && dataCard[0].tag}`} style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#{dataCard.length > 0 && dataCard[0].tag}</span>)</span>
 							<div style={{ display: "flex", alignItems: "center" }}>
-								<a target="_blank" href={`${dataCard && dataCard.link ? dataCard.link : ""}`}>
+								<a target="_blank" href={`${dataCard.length > 0 && dataCard[0].link}`}>
 									<button style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}>
 										<img src="src/assets/link.svg" alt="" />
 									</button>
@@ -41,15 +59,17 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 							</div>
 						</div>
 						<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-							<span title={""} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{""} - {""}</span>
-							<span title={""} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{""}</span>
+							<span style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{dataCard.length > 0 && formatDate(dataCard[0].data)}</span>
+							<span title={dataCard.length > 0 && dataCard[0].local} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{dataCard.length > 0 && dataCard[0].local}</span>
 						</div>
 						<Description>
-							{dataCard && dataCard.snippet ? dataCard.snippet : ""}
+							{dataCard.length > 0 && dataCard[0].descricao}
 						</Description>
 					</div>
 					<ContainerButton>
-						<Button type="button" onClick={() => setModalOpen(true)}>Ver fotos</Button>
+						<Button type="button" onClick={() => {
+							fetchImages();
+						}}>Ver fotos</Button>
 					</ContainerButton>
 					{modalOpen && (
 						<div style={{
@@ -75,19 +95,22 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 								overflow: "hidden",
 								maxHeight: "80%",
 							}}>
-								<ContainerImage style={{ overflow: `${images && images.length > 0 ? "auto" : "hidden"}`}}>
+								<ContainerImage style={{ overflow: `${images && images.length > 0 ? "auto" : "hidden"}`, minHeight: "100px", position: "relative"}}>
 									{images && images.length > 0 ? (
 										<>
 											{images.map((image, index) => (
-												<img key={index} src={image} alt={`Imagem ${index}`} style={{ width: "100%", marginBottom: "10px", borderRadius: "8px", border: "2px solid #000" }} />
+												<img key={index} src={image} alt={`Imagem ${index}`} style={{ maxWidth: "auto", height: "200px", marginBottom: "10px", borderRadius: "8px", border: "2px solid #000" }} />
 											))}
 										</>
 									) : (
-										<Span style={{ margin: "20px", textDecoration: "underline", userSelect: "none" }} color="white" size="20px">SEM IMAGENS</Span>
+										<Span style={{ position: "absolute", transform: "translate(275%, 88%)", margin: "20px", textDecoration: "underline", userSelect: "none" }} color="white" size="20px">SEM IMAGENS</Span>
 									)}
 								</ContainerImage>
 								<div style={{ marginTop: "10px" }}>
-									<Button type="button" onClick={() => setModalOpen(false)}>Fechar</Button>
+									<Button type="button" onClick={() => {
+										setModalOpen(false);
+										setImages([]);
+									}}>Fechar</Button>
 								</div>
 							</div>
 						</div>

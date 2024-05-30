@@ -14,7 +14,8 @@ export const Description = styled.div`
 
 export const ContainerButton = styled.div`
   margin-bottom: 20px;
-  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
 `;
 
 export const ContainerImage = styled.div`

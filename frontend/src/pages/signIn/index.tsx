@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Container, ContainerForm, Header, ImageBottomRight, ImageTopLeft } from './styles';
 import Input from '../../components/input';
@@ -8,6 +9,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Loading from '../../shared/loading';
 import { useToast } from '../../context/ToastContext';
+import { SearchGemini } from '../../shared/google/searchGemini';
 // import Checkbox from '../../components/checkbox';
 
 interface SignInProps {} 
@@ -62,6 +64,10 @@ const SignIn: React.FC<SignInProps> = () => {
 			if(user && user.email && user.email.length > 0 && user.senha.length > 0){
 				Cookies.set('user_email', user.email);
 				Cookies.set('user_senha', user.senha);
+				if(!localStorage.getItem('eventos')){
+					const events = await SearchGemini();
+					localStorage.setItem('eventos', JSON.stringify(events));
+				}
 				navigate("/");
 				showToast(`Seja bem vindo de volta ${user.nome}`, '#00875F');
 			} else {
@@ -71,6 +77,8 @@ const SignIn: React.FC<SignInProps> = () => {
 				showToast('Usuário e/ou senha estão incorretos!', '#E74646');
 			}
 		} catch (error) {
+			Cookies.remove('user_email');
+			Cookies.remove('user_senha');
 			console.log(error);
 		} finally {
 			setLoading(false);

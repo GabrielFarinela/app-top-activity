@@ -16,7 +16,6 @@ interface ICard {
 	children2: ReactNode;
 	handlePreviousPage: () => void;
 	handleNextPage: () => void;
-	setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FlexBox: React.FC<FlexBoxProps> = ({ transparent, width, height, children, position, border, styleinline }) => (
