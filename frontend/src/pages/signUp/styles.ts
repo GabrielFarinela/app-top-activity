@@ -8,6 +8,7 @@ export const Container = styled.div<ContainerProps>`
    display: flex;
    flex-direction: column;
    justify-content: space-between;
+   align-content: flex-end;
 
    position: relative;
 

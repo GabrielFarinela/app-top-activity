@@ -7,6 +7,7 @@ import Span from "../../../span";
 import { searchImages } from "../../../../shared/google/searchImages";
 import { useToast } from "../../../../context/ToastContext";
 import Loading from "../../../../shared/loading";
+import Cookies from 'js-cookie';
 
 interface ICardContent {
 	dataCard: any;
@@ -44,6 +45,42 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 		return `https://www.google.com/search?q=${encodedTitleAndLocation}`;
 	};
 
+	const insertUserWithEvent = async (): Promise<Response | void> => {
+		try {
+			if (iconFavorite === "favorite-clean") {
+				const response = await fetch("http://localhost:3000/api/eventUser", {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						userId: Cookies.get('user_id'),
+						eventId: dataCard[0]._id
+					})
+				});
+	
+				
+				if (response.status >= 200 && response.status < 300) {
+					showToast("Evento adicionado aos favoritos", "#4BB543");
+					return response;
+				} else {
+					showToast("Erro ao adicionar evento aos favoritos", "#E74646");
+					return response;
+				}
+			} 
+		} catch (error) {
+			showToast("Erro ao remover evento dos favoritos", "#E74646");
+			console.error('Fetch error:', error);
+			throw error;
+		}
+	};
+  
+
+	const favoriteEvent = async () => {
+		await insertUserWithEvent();
+		setIconFavorite((prevState) => prevState === "favorite-clean" ? "favorite" : "favorite-clean");
+	};
+
 	return (
 		<div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between"}}>
 			{dataCard && dataCard.length > 0 && dataCard[0].titulo && dataCard[0].titulo.length > 0 && dataCard[0].descricao.length > 0 ? (
@@ -59,9 +96,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 								</a>
 								<button 
 									style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
-									onClick={() => {
-										setIconFavorite((prevState) => prevState === "favorite-clean" ? "favorite" : "favorite-clean");
-									}}
+									onClick={() => favoriteEvent()}
 								>
 									<img src={`src/assets/${iconFavorite}.svg`} alt="" />
 								</button>

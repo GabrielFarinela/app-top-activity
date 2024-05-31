@@ -6,13 +6,17 @@ import { Header } from '../signIn/styles';
 import Span from '../../components/span';
 import Cards from '../../components/card';
 import CardContent from '../../components/card/components/cardContent';
+import Loading from '../../shared/loading';
 
 const Home: React.FC = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [objectsPerPage] = useState<number>(2);
 	const [events, setEvents] = useState<any[]>([]);
+	const [loading, setLoading] = useState(false);
 
 	const fetchEvents = async (offset: number = 0) => {
+		if(events.length === 0)
+			setLoading(true);
 		try {
 			const response = await fetch(`http://localhost:3000/api/event?limit=10&offset=${offset}`);
 			if (response.ok) {
@@ -23,6 +27,8 @@ const Home: React.FC = () => {
 			}
 		} catch (error) {
 			console.error('Fetch error:', error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -76,12 +82,12 @@ const Home: React.FC = () => {
 					Página inicial
 				</Span>
 			</Header>
-			<Cards
+			{loading ? <Loading/> : <Cards
 				handleNextPage={handleNextPage}
 				handlePreviousPage={handlePreviousPage}
 				children={card}
 				children2={card2}
-			/>
+			/>}
 		</>
 	);
 };
