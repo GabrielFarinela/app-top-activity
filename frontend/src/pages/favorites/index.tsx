@@ -21,7 +21,7 @@ const Favorites: React.FC = () => {
 				</Span>
 			</Header>
 			<ContainerBlock>
-				{Array.from({ length: 30 }).map((_, index) => (
+				{Array.from({ length: 20 }).map((_, index) => (
 					<Card key={index}>
 						<ContentCard />
 					</Card>

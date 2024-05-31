@@ -1,19 +1,7 @@
 import styled from 'styled-components';
 
-interface ContainerProps {
-   minHeight?: string;
-}
-
-export const Container = styled.div<ContainerProps>`
-   display: flex;
-   flex-direction: column;
-   justify-content: space-between;
-   align-items: flex-end;
-
-   position: relative;
-
-   width: 100vw;
-   height: 100vh;
+export const Container = styled.div`
+   overflow: hidden !important;
 `;
 
 export const ImageBottomRight = styled.div`

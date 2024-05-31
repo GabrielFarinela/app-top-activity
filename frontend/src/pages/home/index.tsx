@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useMemo, useEffect } from 'react';
@@ -9,18 +10,35 @@ import CardContent from '../../components/card/components/cardContent';
 const Home: React.FC = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [objectsPerPage] = useState<number>(2);
-	const [totalObjects, setTotalObjects] = useState<number>(0);
+	const [events, setEvents] = useState<any[]>([]);
+
+	const fetchEvents = async (offset: number = 0) => {
+		try {
+			const response = await fetch(`http://localhost:3000/api/event?limit=10&offset=${offset}`);
+			if (response.ok) {
+				const newEvents = await response.json();
+				setEvents(prevEvents => [...prevEvents, ...newEvents]);
+			} else {
+				console.error('Error fetching events:', response.status);
+			}
+		} catch (error) {
+			console.error('Fetch error:', error);
+		}
+	};
 
 	useEffect(() => {
-		const eventos = localStorage.getItem('eventos');
-		if (eventos) {
-			const parsedEventos = JSON.parse(eventos);
-			setTotalObjects(parsedEventos.length);
-		}
+		fetchEvents();
 	}, []);
 
+	useEffect(() => {
+		const maxPage = Math.ceil(events.length / objectsPerPage);
+		if (currentPage > 1 && currentPage === maxPage - 1) {
+			fetchEvents(events.length);
+		}
+	}, [currentPage, events.length, objectsPerPage]);
+
 	const handleNextPage = () => {
-		const maxPage = Math.ceil(totalObjects / objectsPerPage);
+		const maxPage = Math.ceil(events.length / objectsPerPage);
 		if (currentPage < maxPage) {
 			setCurrentPage(currentPage + 1);
 		}
@@ -32,26 +50,19 @@ const Home: React.FC = () => {
 		}
 	};
 
-
 	const getDataForCard = (cardIndex: number) => {
 		const startIndex = (currentPage - 1) * objectsPerPage;
 		const endIndex = startIndex + objectsPerPage;
-		const eventos = localStorage.getItem('eventos');
-		if (eventos) {
-			const parsedEventos = JSON.parse(eventos);
-			return parsedEventos.slice(startIndex + cardIndex - 1, endIndex + cardIndex - 1);
-		} else {
-			return [];
-		}
+		return events.slice(startIndex + cardIndex - 1, endIndex + cardIndex - 1);
 	};
 
 	const card = useMemo(() => {
 		return <CardContent dataCard={getDataForCard(1)} />;
-	}, [currentPage]);
+	}, [currentPage, events]);
 
 	const card2 = useMemo(() => {
 		return <CardContent dataCard={getDataForCard(2)} />;
-	}, [currentPage]);
+	}, [currentPage, events]);
 
 	return (
 		<>

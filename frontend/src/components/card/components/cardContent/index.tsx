@@ -34,7 +34,14 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 	};
 
 	const createLink = () => {
-		return `https://www.google.com/search?q=${dataCard[0].titulo}`;
+		if (!dataCard || dataCard.length === 0) {
+			return '';
+		}
+		
+		const titleAndLocation = `${dataCard[0].titulo}`;
+		const encodedTitleAndLocation = encodeURIComponent(titleAndLocation);
+		
+		return `https://www.google.com/search?q=${encodedTitleAndLocation}`;
 	};
 
 	return (
