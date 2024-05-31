@@ -45,10 +45,20 @@ export default async function handler(req, res) {
     case 'PUT':
       try {
         const { email } = req.body;
+        const { nome } = req.body;
+        const { senha } = req.body;
         const updateData = req.body;
 
         if (!email) {
           return res.status(400).json({ message: 'Email é obrigatório para atualização' });
+        }
+        
+        if (!senha) {
+          return res.status(400).json({ message: 'Senha é obrigatório para atualização' });
+        }
+
+        if (!nome) {
+          return res.status(400).json({ message: 'Nome é obrigatório para atualização' });
         }
 
         const updatedUser = await UserController.updateUser(email, updateData);

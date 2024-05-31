@@ -10,15 +10,37 @@ import { useToast } from '../../context/ToastContext';
 import Loading from '../../shared/loading';
 
 const MyProfile: React.FC = () => {
+	const [errorNome, setErrorNome] = useState(false);
+	const [errorSenha, setErrorSenha] = useState(false);
+	const [errorBio] = useState(false);
+
+	const [id] = useState(Cookies.get('user_id') ?? "");
 	const [nome,setNome] = useState(Cookies.get('user_nome') ?? "");
 	const [email,setEmail] = useState(Cookies.get('user_email') ?? "");
 	const [senha,setSenha] = useState(Cookies.get('user_senha') ?? "");
 	const [bio,setBio] = useState(Cookies.get('user_bio') ?? "");
+	
 	const [loading,setLoading] = useState(false);
 
 	const { showToast } = useToast();
 
 	const updateUser = async (): Promise<Response | void> => {
+		if(nome.length === 0){
+			setErrorNome(true);
+			showToast("Digite um nome por favor", "#E74646");
+			return;
+		} else {
+			setErrorNome(false);
+		}
+
+		if(senha.length === 0){
+			setErrorSenha(true);
+			showToast("Digite uma senha por favor", "#E74646");
+			return;
+		} else {
+			setErrorSenha(false);
+		}
+
 		try {
 			const response = await fetch("http://localhost:3000/api/user", {
 				method: 'PUT',
@@ -26,6 +48,7 @@ const MyProfile: React.FC = () => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
+					"id": id,
 					"nome": nome,
 					"email": email,
 					"senha": senha,
@@ -55,7 +78,6 @@ const MyProfile: React.FC = () => {
 			await updateUser();
 
 			Cookies.set('user_nome', nome);
-			Cookies.set('user_email', email);
 			Cookies.set('user_senha', senha);
 			Cookies.set('user_bio', bio);
 		} catch (error) {
@@ -115,10 +137,10 @@ const MyProfile: React.FC = () => {
 					<ContainerInputs>
 						<Span color="white" size="25px">Meus dados</Span>
 						<ContainerInput>
-							<Input value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
-							<Input value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
-							<Input value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
-							<InputArea value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
+							<Input error={errorNome} value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
+							<Input disabled value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
+							<Input error={errorSenha} value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
+							<InputArea error={errorBio} value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
 						</ContainerInput>
 					</ContainerInputs>
 				</ContainerMain>

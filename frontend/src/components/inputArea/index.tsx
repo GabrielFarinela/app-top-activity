@@ -4,19 +4,21 @@ import { InputContainer, StyledInput, StyledLabel } from './styles';
 export interface IInputArea{
    label: string;
 	value: string;
+	error?: boolean;
 	onChange?: React.ChangeEventHandler<HTMLTextAreaElement> | undefined
 }
 
 const InputArea: React.FC<IInputArea> = ({
 	label,
 	value,
-	onChange
+	onChange,
+	error = false
     
 }) => {
 	return (
 		<InputContainer>
 			<StyledLabel>{label}</StyledLabel>
-			<StyledInput onChange={onChange} value={value}/>
+			<StyledInput style={{ border: error ? '1px solid red' : undefined }} onChange={onChange} value={value}/>
 		</InputContainer>
 	);
 };
