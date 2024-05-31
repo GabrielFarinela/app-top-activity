@@ -10,6 +10,7 @@ const StyledButton = styled.button`
   font-size: 16px;
   padding: 0 20px;
   cursor: pointer;
+  position: relative;
 
   &:hover{
     opacity: 0.8;

@@ -27,10 +27,13 @@ const Spinner = styled.div`
   animation: ${spin} 1s linear infinite;
 `;
 
-const Loading: React.FC = () => {
+const Loading: React.FC<{ height?: string, width?: string}> = ({
+	height,
+	width
+}) => {
 	return (
 		<Overlay>
-			<Spinner />
+			<Spinner style={{ width: width ?? "50px", height: height ?? "50px" }}/>
 		</Overlay>
 	);
 };

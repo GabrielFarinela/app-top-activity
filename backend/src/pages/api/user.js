@@ -3,7 +3,7 @@ import UserController from "@/database/controller/UserController";
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*'); 
   res.setHeader('Access-Control-Allow-Headers', '*'); 
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); 
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS'); 
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
       } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Usuário não encontrado' });
+        res.status(500).json({ message: 'Erro interno do servidor' });
       } 
       break;
     case 'POST':
@@ -36,6 +36,28 @@ export default async function handler(req, res) {
         const usuarioSalvo = await UserController.saveUser(req.body);
 
         res.status(201).json(usuarioSalvo);
+
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+      }
+      break;
+    case 'PUT':
+      try {
+        const { email } = req.body;
+        const updateData = req.body;
+
+        if (!email) {
+          return res.status(400).json({ message: 'Email é obrigatório para atualização' });
+        }
+
+        const updatedUser = await UserController.updateUser(email, updateData);
+
+        if (!updatedUser) {
+          return res.status(404).json({ message: 'Usuário não encontrado ou não atualizado' });
+        }
+
+        res.status(200).json(updatedUser);
 
       } catch (error) {
         console.error(error);

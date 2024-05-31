@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { Description, ContainerButton, ContainerImage } from "./styles";
 import Button from "../../../button";
 import Span from "../../../span";
-import Loading from "../../../../shared/loading";
-import { format } from "date-fns";
 import { searchImages } from "../../../../shared/google/searchImages";
+import { useToast } from "../../../../context/ToastContext";
+import Loading from "../../../../shared/loading";
 
 interface ICardContent {
 	dataCard: any;
@@ -17,14 +17,12 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 	const [iconFavorite, setIconFavorite] = useState("favorite-clean");
 	const [modalOpen, setModalOpen] = useState(false);
 	const [images, setImages] = useState<any[]>([]);
+	const [loading, setLoading] = useState(false);
 
-	const formatDate = (dt: string) => {
-		const date = new Date(dt);
-		return format(date, 'dd/MM/yyyy') ?? "";
-	};
+	const { showToast } = useToast();
 
 	const fetchImages = async () => {
-		const response = await searchImages(dataCard[0].termo_busca_imagem);
+		const response = await searchImages(dataCard[0].termo);
 		
 		const imagesFetched: any[] = [];
 		response?.map((item: any) => {
@@ -35,15 +33,19 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 		setModalOpen(true);
 	};
 
+	const createLink = () => {
+		return `https://www.google.com/search?q=${dataCard[0].titulo}`;
+	};
+
 	return (
 		<div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between"}}>
-			{dataCard ? (
+			{dataCard && dataCard.length > 0 && dataCard[0].titulo && dataCard[0].titulo.length > 0 && dataCard[0].descricao.length > 0 ? (
 				<>
 					<div style={{ margin: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
 						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
 							<span title={`${dataCard.length > 0 && dataCard[0].titulo}`} style={{ color: "white", fontSize: "1.5rem" }}>{dataCard.length > 0 && dataCard[0].titulo} - (<span title={`#${dataCard.length > 0 && dataCard[0].tag}`} style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#{dataCard.length > 0 && dataCard[0].tag}</span>)</span>
 							<div style={{ display: "flex", alignItems: "center" }}>
-								<a target="_blank" href={`${dataCard.length > 0 && dataCard[0].link}`}>
+								<a target="_blank" href={createLink()}>
 									<button style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}>
 										<img src="src/assets/link.svg" alt="" />
 									</button>
@@ -59,7 +61,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 							</div>
 						</div>
 						<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-							<span style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{dataCard.length > 0 && formatDate(dataCard[0].data)}</span>
+							<span title={dataCard.length > 0 && dataCard[0].data} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{dataCard.length > 0 && dataCard[0].data}</span>
 							<span title={dataCard.length > 0 && dataCard[0].local} style={{ fontSize: "0.875rem", color: "#8D8D99" }}>{dataCard.length > 0 && dataCard[0].local}</span>
 						</div>
 						<Description>
@@ -67,9 +69,17 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 						</Description>
 					</div>
 					<ContainerButton>
-						<Button type="button" onClick={() => {
-							fetchImages();
-						}}>Ver fotos</Button>
+						<Button type="button" onClick={async () => {
+							setLoading(true);
+							try {
+								await fetchImages();
+								console.log("open images");
+							} catch (error) {
+								showToast("Erro ao carregar imagens", '#E74646');
+							} finally {
+								setLoading(false);
+							}
+						}}>{loading ? <Loading height="25px" width="25px"/> : (<>Ver fotos</>)}</Button>
 					</ContainerButton>
 					{modalOpen && (
 						<div style={{
@@ -116,7 +126,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 						</div>
 					)}
 				</>
-			) : <Loading />}
+			) : undefined}
 		</div>
 	);
 };

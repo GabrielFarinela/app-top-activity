@@ -62,12 +62,17 @@ const SignIn: React.FC<SignInProps> = () => {
 			const user = await findUser(email, senha);
 			
 			if(user && user.email && user.email.length > 0 && user.senha.length > 0){
+				Cookies.set('user_id', user._id);
+				Cookies.set('user_nome', user.nome);
 				Cookies.set('user_email', user.email);
 				Cookies.set('user_senha', user.senha);
+				Cookies.set('user_bio', user.bio);
+				
 				if(!localStorage.getItem('eventos')){
 					const events = await SearchGemini();
 					localStorage.setItem('eventos', JSON.stringify(events));
 				}
+				
 				navigate("/");
 				showToast(`Seja bem vindo de volta ${user.nome}`, '#00875F');
 			} else {

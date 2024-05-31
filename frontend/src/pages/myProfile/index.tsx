@@ -5,11 +5,80 @@ import { Container, ContainerButton, ContainerInput, ContainerInputs, ContainerM
 import Button from '../../components/button';
 import Input from '../../components/input';
 import InputArea from '../../components/inputArea';
-import InputData from '../../components/inputData';
-import InputRange from '../../components/inputRange';
+import Cookies from 'js-cookie';
+import { useToast } from '../../context/ToastContext';
+import Loading from '../../shared/loading';
 
 const MyProfile: React.FC = () => {
-	const [ value, setValue ] = useState(0);
+	const [nome,setNome] = useState(Cookies.get('user_nome') ?? "");
+	const [email,setEmail] = useState(Cookies.get('user_email') ?? "");
+	const [senha,setSenha] = useState(Cookies.get('user_senha') ?? "");
+	const [bio,setBio] = useState(Cookies.get('user_bio') ?? "");
+	const [loading,setLoading] = useState(false);
+
+	const { showToast } = useToast();
+
+	const updateUser = async (): Promise<Response | void> => {
+		try {
+			const response = await fetch("http://localhost:3000/api/user", {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"nome": nome,
+					"email": email,
+					"senha": senha,
+					"bio": bio
+				})
+			});
+		
+			if (!response.ok) {
+				const errorData = await response.json();
+				showToast(`Erro ao atualizar usuário: ${errorData.message}`, "#E74646");
+				throw new Error(errorData.message);
+			}
+		
+			const data = await response.json();
+			showToast("Usuário atualizado com sucesso!", "#4BB543");
+		
+			return data;
+		} catch (error) {
+			showToast("Erro ao atualizar usuário", "#E74646");
+			throw error;
+		}
+	};
+
+	const submit = async () => {
+		setLoading(true);
+		try {
+			await updateUser();
+
+			Cookies.set('user_nome', nome);
+			Cookies.set('user_email', email);
+			Cookies.set('user_senha', senha);
+			Cookies.set('user_bio', bio);
+		} catch (error) {
+			showToast("Erro ao atualizar seu perfil", "#E74646");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const getInitials = () => {
+		const words = nome.split(' ');
+		let initials = '';
+		
+		words.forEach(word => {
+			if (word.length > 0) {
+				if(initials.length === 2)
+					return initials;
+				initials += word[0];
+			}
+		});
+		
+		return initials.toUpperCase();
+	};
 
 	return (
 		<>
@@ -27,36 +96,37 @@ const MyProfile: React.FC = () => {
 				</Span>
 			</Header>
 			<Container>
-				<div style={{ position: "relative"}}>
-					<button style={{ border: "0", backgroundColor: "transparent", position: "absolute", bottom: -5, right: -10, cursor: "pointer" }}>
-						<img style={{ maxWidth: "30px", height: "auto" }} src="src/assets/foto.svg" alt="foto" />
-					</button>
-					<img style={{ borderRadius: "50%", maxWidth: "90px", border: "2px solid #8D8D99" }} src="https://avatars.githubusercontent.com/u/84156560?v=4" alt="" />
+				<div style={{ position: "relative" }}>
+					<div style={{ 
+						borderRadius: "50%", 
+						width: "90px", 
+						height: "90px", 
+						border: "2px solid #8D8D99", 
+						display: "flex", 
+						alignItems: "center", 
+						justifyContent: "center", 
+						backgroundColor: "#202024" 
+					}}>
+						<span style={{ color: "white", fontSize: "32px" }}>{getInitials()}</span>
+					</div>
 				</div>
+
 				<ContainerMain>
 					<ContainerInputs>
 						<Span color="white" size="25px">Meus dados</Span>
 						<ContainerInput>
-							<Input label="Nome" type="text"/>
-							<Input label="Email" type="email"/>
-							<InputArea label="Bio"/>
-						</ContainerInput>
-					</ContainerInputs>
-					<ContainerInputs>
-						<Span color="white" size="25px">Opções de busca</Span>
-						<ContainerInput>
-							<Input placeholder="#PROGRAMAÇÃO, #CORRIDA" label="Tag" type="text"/>
-							<InputData label="Data início"/>
-							<InputData label="Data fim"/>
-							<InputRange label="Distância" tipo="km" max={300} onChange={(e) => setValue(e)} value={value}/>
-							<InputRange label="Valor" tipo="R$" max={2500} onChange={(e) => setValue(e)} value={value}/>
+							<Input value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
+							<Input value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
+							<Input value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
+							<InputArea value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
 						</ContainerInput>
 					</ContainerInputs>
 				</ContainerMain>
 				<ContainerButton>
-					<Button type="submit">Salvar</Button>
+					<Button onClick={submit} type="button">Salvar</Button>
 				</ContainerButton>
 			</Container>
+			{loading ? <Loading/> : undefined}
 		</>
 	);
 };

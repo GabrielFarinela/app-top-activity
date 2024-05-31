@@ -17,7 +17,20 @@ const selectByEmailAndPassword = async (email, password) => {
   return user;
 };
 
+const updateUser = async (email, updateData) => {
+  if (!database.connect()) return false;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { email: email }, 
+      updateData, 
+      { new: true } 
+    );
+
+    return updatedUser;
+};
+
 export default {
    saveUser,
-   selectByEmailAndPassword
+   selectByEmailAndPassword,
+   updateUser
 }
