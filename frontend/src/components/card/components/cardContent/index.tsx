@@ -91,8 +91,6 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 			throw error;
 		}
 	};
-	
-  
 
 	const favoriteEvent = async () => {
 		await insertUserWithEvent();

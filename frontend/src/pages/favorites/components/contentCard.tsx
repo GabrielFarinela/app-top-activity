@@ -8,13 +8,16 @@ import { IEvents } from '../../home';
 import { searchImages } from '../../../shared/google/searchImages';
 import { useToast } from '../../../context/ToastContext';
 import Loading from '../../../shared/loading';
+import Cookies from 'js-cookie';
 
 interface IContentCard {
 	event: IEvents;
+	onCallback: (eventId: string) => void;
 }
 
 const ContentCard: React.FC<IContentCard> = ({
-	event
+	event,
+	onCallback
 }) => {
 	const [images, setImages] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -34,6 +37,39 @@ const ContentCard: React.FC<IContentCard> = ({
 		setImages(imagesFetched);
 
 		setModalOpen(true);
+	};
+
+	const removeFavorite = async (): Promise<Response | void> => {
+		try {
+			const response = await fetch("http://localhost:3000/api/eventUser", {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					userId: Cookies.get('user_id'),
+					eventId: event._id
+				})
+			});
+	
+			if (response.status >= 200 && response.status < 300) {
+				showToast("Evento removido dos favoritos", "#4BB543");
+				return response;
+			} else {
+				showToast("Erro ao remover evento dos favoritos", "#E74646");
+				return response;
+			}
+
+		} catch (error) {
+			showToast("Erro ao processar requisição", "#E74646");
+			throw error;
+		}
+	};
+
+	const onClickFavorite = async () => {
+		await removeFavorite();
+		setIconFavorite((prevState) => prevState === "favorite" ? "favorite-clean" : "favorite");
+		onCallback(event._id);
 	};
 
 	const createLink = () => {
@@ -61,7 +97,7 @@ const ContentCard: React.FC<IContentCard> = ({
 						<button 
 							style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
 							onClick={() => {
-								setIconFavorite((prevState) => prevState === "favorite" ? "favorite-clean" : "favorite");
+								onClickFavorite();
 							}}
 						>
 							<img src={`src/assets/${iconFavorite}.svg`} alt="" />

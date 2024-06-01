@@ -33,6 +33,17 @@ const Favorites: React.FC = () => {
 		}
 	};
 
+	const onCallback = (eventId: string) => {
+		console.log(eventId);
+		setEvents((prevState) => {
+			const newPrev = [...prevState];
+
+			const filteredList = newPrev.filter((event) => event.eventId.toString() !== eventId.toString());
+
+			return filteredList;
+		});
+	};
+
 	useEffect(() => {
 		if(numberReq === 1){
 			fetchEvents(Cookies.get("user_id") ?? "");
@@ -59,7 +70,7 @@ const Favorites: React.FC = () => {
 				<ContainerBlock>
 					{events.length > 0 ? events.map((event: IEvents) => (
 						<Card key={`${event.eventId}evento${event.titulo}`}>
-							<ContentCard event={event}/>
+							<ContentCard onCallback={onCallback} event={event}/>
 						</Card>
 					)) : (
 						<Span color="#8D8D99" size="20px">Nenhum evento favorito encontrado.</Span>

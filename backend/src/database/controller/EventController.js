@@ -25,6 +25,7 @@ const getShuffledEvents = async (limit = 10) => {
   return await Event.aggregate([{ $sample: { size: limit } }]);
 };
 
+//rodar se precisar add um campo na coleção
 const addEventIdToEvents = async () => {
   if(!database.connect()) return false;
 
@@ -37,7 +38,7 @@ const addEventIdToEvents = async () => {
     );
   });
 
-  const results = await Promise.all(updatePromises);
+  await Promise.all(updatePromises);
 
   return true;
 };
