@@ -8,20 +8,37 @@ import Cards from '../../components/card';
 import CardContent from '../../components/card/components/cardContent';
 import Loading from '../../shared/loading';
 
+export interface IEvents{
+	data: string;
+	local: string;
+	termo: string;
+	titulo: string;
+	tag: string;
+	descricao: string;
+	_id: string;
+	eventId: string;
+	hasChecked: boolean;
+}
+
 const Home: React.FC = () => {
+	let numberReq = 1;
+
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [objectsPerPage] = useState<number>(2);
-	const [events, setEvents] = useState<any[]>([]);
+	const [events, setEvents] = useState<IEvents[]>([]);
 	const [loading, setLoading] = useState(false);
 
 	const fetchEvents = async (offset: number = 0) => {
-		if(events.length === 0)
-			setLoading(true);
+		setLoading(true);
 		try {
 			const response = await fetch(`http://localhost:3000/api/event?limit=10&offset=${offset}`);
 			if (response.ok) {
-				const newEvents = await response.json();
-				setEvents(prevEvents => [...prevEvents, ...newEvents]);
+				const newEvents: IEvents[] = await response.json();
+				const eventsWithDefaultChecked = newEvents.map(event => ({
+					...event,
+					hasChecked: false
+				}));
+				setEvents(prevEvents => [...prevEvents, ...eventsWithDefaultChecked]);
 			} else {
 				console.error('Error fetching events:', response.status);
 			}
@@ -33,7 +50,10 @@ const Home: React.FC = () => {
 	};
 
 	useEffect(() => {
-		fetchEvents();
+		if(numberReq === 1){
+			fetchEvents();
+			numberReq = numberReq + 1;
+		}
 	}, []);
 
 	useEffect(() => {

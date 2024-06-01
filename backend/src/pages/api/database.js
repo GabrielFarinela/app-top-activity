@@ -5,7 +5,6 @@ export default async function handler(req, res) {
     await database.connect();
     res.status(200).json({ message: "Conectado ao MongoDB" });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Erro ao conectar" });
   }
 };

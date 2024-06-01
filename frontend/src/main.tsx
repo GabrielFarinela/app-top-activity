@@ -8,10 +8,10 @@ import SignUp from './pages/signUp';
 import NotFound from './pages/notFound';
 import Layout from './shared/layout';
 import MyProfile from './pages/myProfile';
-import Favorites from './pages/favorites';
 import { PrivateRoute } from './shared/routes/privateRoute';
 import { PublicRoute } from './shared/routes/publicRoute';
 import ToastProvider from './context/ToastContext';
+import Favorites from './pages/favorites';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 

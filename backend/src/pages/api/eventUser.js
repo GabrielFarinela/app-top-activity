@@ -28,6 +28,19 @@ export default async function handler(req, res) {
             }
             break;
         case 'DELETE':
+            try {
+                const { userId, eventId } = req.body;
+
+                const result = await EventUserController.deleteEventUserByIds(eventId, userId);
+
+                if (result) {
+                    res.status(200).json({ message: 'Dados removidos com sucesso' });
+                } else {
+                    res.status(404).json({ message: 'Dados não encontrados' });
+                }
+            } catch (error) {
+                res.status(500).json({ message: 'Erro interno do servidor' });
+            }
             break;
         case 'PUT':
             break;

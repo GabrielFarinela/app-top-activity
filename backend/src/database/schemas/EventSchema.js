@@ -7,6 +7,7 @@ const EventSchema = new Schema({
   local: { type: String, required: true },
   descricao: { type: String, required: true },
   termo: { type: String, required: true },
+  eventId: { type: String }
 });
 
 const Event = models.Event || model("Event", EventSchema);

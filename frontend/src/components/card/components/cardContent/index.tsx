@@ -59,7 +59,6 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 					})
 				});
 	
-				
 				if (response.status >= 200 && response.status < 300) {
 					showToast("Evento adicionado aos favoritos", "#4BB543");
 					return response;
@@ -67,13 +66,32 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 					showToast("Erro ao adicionar evento aos favoritos", "#E74646");
 					return response;
 				}
-			} 
+			} else {
+				const response = await fetch("http://localhost:3000/api/eventUser", {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						userId: Cookies.get('user_id'),
+						eventId: dataCard[0]._id
+					})
+				});
+	
+				if (response.status >= 200 && response.status < 300) {
+					showToast("Evento removido dos favoritos", "#4BB543");
+					return response;
+				} else {
+					showToast("Erro ao remover evento dos favoritos", "#E74646");
+					return response;
+				}
+			}
 		} catch (error) {
-			showToast("Erro ao remover evento dos favoritos", "#E74646");
-			console.error('Fetch error:', error);
+			showToast("Erro ao processar requisição", "#E74646");
 			throw error;
 		}
 	};
+	
   
 
 	const favoriteEvent = async () => {
@@ -115,7 +133,6 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 							setLoading(true);
 							try {
 								await fetchImages();
-								console.log("open images");
 							} catch (error) {
 								showToast("Erro ao carregar imagens", '#E74646');
 							} finally {

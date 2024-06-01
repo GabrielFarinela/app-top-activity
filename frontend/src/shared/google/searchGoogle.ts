@@ -31,7 +31,6 @@ export async function searchGoogle(query: string, location?: string): Promise<Se
 	
 		return data.items;
 	} catch (error) {
-		console.error('Error:', error);
 		return null;
 	}
 }

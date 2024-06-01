@@ -16,7 +16,6 @@ export async function searchImages(query: string) {
 	
 		return data.items;
 	} catch (error) {
-		console.error('Error:', error);
 		return null;
 	}
 }

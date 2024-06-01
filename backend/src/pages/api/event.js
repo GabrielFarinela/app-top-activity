@@ -11,12 +11,22 @@ export default async function handler(req, res) {
 
   switch (req.method) {
     case 'GET':
-      try {
-        const limit = parseInt(req.query.limit) || 10;
-        const events = await EventController.getShuffledEvents(limit);
-        res.status(200).json(events);
-      } catch (error) {
-        res.status(500).json({ message: 'Erro interno do servidor' });
+      if(req.query.userId){
+        try {
+          const userId = req.query.userId;
+          const eventsByUserId = await EventController.getEventsByUserId(userId);
+          res.status(200).json(eventsByUserId);
+        } catch (error) {
+          res.status(500).json({ message: 'Erro interno do servidor' });
+        }
+      } else {
+        try {
+          const limit = parseInt(req.query.limit) || 10;
+          const events = await EventController.getShuffledEvents(limit);
+          res.status(200).json(events);
+        } catch (error) {
+          res.status(500).json({ message: 'Erro interno do servidor' });
+        }
       }
       break;
     case 'POST':
@@ -30,9 +40,14 @@ export default async function handler(req, res) {
       break;
     case 'PUT':
       try {
-        // Código para PUT (caso necessário)
+        const result = await EventController.addEventIdToEvents();
+        if (result) {
+          res.status(200).json({ message: 'Todos os documentos foram atualizados com sucesso' });
+        } else {
+          res.status(500).json({ message: 'Erro ao atualizar documentos' });
+        }
       } catch (error) {
-        res.status(500).json({ message: 'Erro interno do servidor' });
+        res.status(500).json({ message: 'Erro interno do servidor', details: error.message });
       }
       break;
     default:

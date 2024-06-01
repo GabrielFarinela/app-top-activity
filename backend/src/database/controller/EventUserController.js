@@ -11,6 +11,9 @@ const saveEventUser = async (queryUser) => {
 
 const deleteEventUserByIds = async (eventId, userId) => {
     if (!database.connect()) return false;
+
+    const result = await EventUser.deleteOne({ eventId, userId });
+    return result.deletedCount > 0;
 };
 
 export default {
