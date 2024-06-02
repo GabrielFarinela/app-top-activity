@@ -11,19 +11,20 @@ export default async function handler(req, res) {
 
   switch (req.method) {
     case 'GET':
-      if(req.query.userId){
+      if(req.query.userId && req.query.limit){
         try {
           const userId = req.query.userId;
-          const eventsByUserId = await EventController.getEventsByUserId(userId);
-          res.status(200).json(eventsByUserId);
+          const limit = parseInt(req.query.limit) || 10;
+          const events = await EventController.getShuffledEvents(limit);
+          res.status(200).json(events);
         } catch (error) {
           res.status(500).json({ message: 'Erro interno do servidor' });
         }
       } else {
         try {
-          const limit = parseInt(req.query.limit) || 10;
-          const events = await EventController.getShuffledEvents(limit);
-          res.status(200).json(events);
+          const userId = req.query.userId;
+          const eventsByUserId = await EventController.getEventsByUserId(userId);
+          res.status(200).json(eventsByUserId);
         } catch (error) {
           res.status(500).json({ message: 'Erro interno do servidor' });
         }

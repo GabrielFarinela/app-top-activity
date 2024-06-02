@@ -11,11 +11,12 @@ import Cookies from 'js-cookie';
 
 interface ICardContent {
 	dataCard: any;
+	onCallbackAdd: (eventId: string) => void;
+	onCallbackRemove: (eventId: string) => void;
 }
 
 
-const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
-	const [iconFavorite, setIconFavorite] = useState("favorite-clean");
+const CardContent: React.FC<ICardContent> = ({ dataCard, onCallbackAdd, onCallbackRemove }) => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [images, setImages] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -45,9 +46,9 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 		return `https://www.google.com/search?q=${encodedTitleAndLocation}`;
 	};
 
-	const insertUserWithEvent = async (): Promise<Response | void> => {
+	const insertUserWithEvent = async (idAdd: boolean): Promise<Response | void> => {
 		try {
-			if (iconFavorite === "favorite-clean") {
+			if (idAdd) {
 				const response = await fetch("http://localhost:3000/api/eventUser", {
 					method: 'POST',
 					headers: {
@@ -61,6 +62,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 	
 				if (response.status >= 200 && response.status < 300) {
 					showToast("Evento adicionado aos favoritos", "#4BB543");
+					onCallbackAdd(dataCard[0]._id);
 					return response;
 				} else {
 					showToast("Erro ao adicionar evento aos favoritos", "#E74646");
@@ -79,6 +81,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 				});
 	
 				if (response.status >= 200 && response.status < 300) {
+					onCallbackRemove(dataCard[0]._id);
 					showToast("Evento removido dos favoritos", "#4BB543");
 					return response;
 				} else {
@@ -92,9 +95,8 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 		}
 	};
 
-	const favoriteEvent = async () => {
-		await insertUserWithEvent();
-		setIconFavorite((prevState) => prevState === "favorite-clean" ? "favorite" : "favorite-clean");
+	const favoriteEvent = async (isAdd: boolean) => {
+		await insertUserWithEvent(isAdd);
 	};
 
 	return (
@@ -112,9 +114,9 @@ const CardContent: React.FC<ICardContent> = ({ dataCard }) => {
 								</a>
 								<button 
 									style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
-									onClick={() => favoriteEvent()}
+									onClick={() => favoriteEvent(dataCard[0].hasChecked ? false : true)}
 								>
-									<img src={`src/assets/${iconFavorite}.svg`} alt="" />
+									<img src={`src/assets/${dataCard[0].hasChecked ? "favorite" : "favorite-clean"}.svg`} alt="" />
 								</button>
 							</div>
 						</div>

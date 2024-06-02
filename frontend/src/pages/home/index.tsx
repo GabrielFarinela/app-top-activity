@@ -7,6 +7,7 @@ import Span from '../../components/span';
 import Cards from '../../components/card';
 import CardContent from '../../components/card/components/cardContent';
 import Loading from '../../shared/loading';
+import Cookies from 'js-cookie';
 
 export interface IEvents{
 	data: string;
@@ -29,9 +30,11 @@ const Home: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchEvents = async (offset: number = 0) => {
-		setLoading(true);
+		if(events.length === 0){
+			setLoading(true);
+		}
 		try {
-			const response = await fetch(`http://localhost:3000/api/event?limit=10&offset=${offset}`);
+			const response = await fetch(`http://localhost:3000/api/event?limit=10&userId=${Cookies.get("user_id")}&offset=${offset}`);
 			if (response.ok) {
 				const newEvents: IEvents[] = await response.json();
 				const eventsWithDefaultChecked = newEvents.map(event => ({
@@ -49,6 +52,40 @@ const Home: React.FC = () => {
 		}
 	};
 
+	const onCallbackAdd = (eventId: string) => {
+		setEvents((prevState) => {
+			const newPrev = [...prevState];
+
+			const eventIndex = newPrev.findIndex(event => event.eventId === eventId);
+
+			if (eventIndex !== -1) {
+				newPrev[eventIndex] = {
+					...newPrev[eventIndex],
+					hasChecked: true
+				};
+			}
+
+			return newPrev;
+		});
+	};
+
+	const onCallbackRemove = (eventId: string) => {
+		setEvents((prevState) => {
+			const newPrev = [...prevState];
+
+			const eventIndex = newPrev.findIndex(event => event.eventId === eventId);
+
+			if (eventIndex !== -1) {
+				newPrev[eventIndex] = {
+					...newPrev[eventIndex],
+					hasChecked: false
+				};
+			}
+
+			return newPrev;
+		});
+	};
+
 	useEffect(() => {
 		if(numberReq === 1){
 			fetchEvents();
@@ -58,7 +95,7 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		const maxPage = Math.ceil(events.length / objectsPerPage);
-		if (currentPage > 1 && currentPage === maxPage - 1) {
+		if (currentPage === maxPage && maxPage > 1) {
 			fetchEvents(events.length);
 		}
 	}, [currentPage, events.length, objectsPerPage]);
@@ -83,11 +120,11 @@ const Home: React.FC = () => {
 	};
 
 	const card = useMemo(() => {
-		return <CardContent dataCard={getDataForCard(1)} />;
+		return <CardContent onCallbackAdd={onCallbackAdd} onCallbackRemove={onCallbackRemove} dataCard={getDataForCard(1)} />;
 	}, [currentPage, events]);
 
 	const card2 = useMemo(() => {
-		return <CardContent dataCard={getDataForCard(2)} />;
+		return <CardContent onCallbackAdd={onCallbackAdd} onCallbackRemove={onCallbackRemove} dataCard={getDataForCard(2)} />;
 	}, [currentPage, events]);
 
 	return (
