@@ -4,7 +4,7 @@ export const Container = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 90px;
+    gap: 50px;
     align-items: center;
     height: calc(100vh - 81px);
     min-height: 820px;

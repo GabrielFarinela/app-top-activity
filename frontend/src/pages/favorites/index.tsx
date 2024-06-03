@@ -73,7 +73,7 @@ const Favorites: React.FC = () => {
 							<ContentCard onCallback={onCallback} event={event}/>
 						</Card>
 					)) : (
-						<Span color="#8D8D99" size="20px">Nenhum evento favorito encontrado.</Span>
+						<Span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} color="#8D8D99" size="20px">favorite algum evento e ele aparecerá aqui</Span>
 					)}
 				</ContainerBlock>}
 		</Container>

@@ -9,6 +9,7 @@ import { searchImages } from '../../../shared/google/searchImages';
 import { useToast } from '../../../context/ToastContext';
 import Loading from '../../../shared/loading';
 import Cookies from 'js-cookie';
+import LoadingFav from '../../../shared/loadingFav';
 
 interface IContentCard {
 	event: IEvents;
@@ -21,6 +22,7 @@ const ContentCard: React.FC<IContentCard> = ({
 }) => {
 	const [images, setImages] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [loadingFav, setLoadingFav] = useState(false);
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [iconFavorite, setIconFavorite] = useState("favorite");
@@ -40,6 +42,7 @@ const ContentCard: React.FC<IContentCard> = ({
 	};
 
 	const removeFavorite = async (): Promise<Response | void> => {
+		setLoadingFav(true);
 		try {
 			const response = await fetch("http://localhost:3000/api/eventUser", {
 				method: 'DELETE',
@@ -63,6 +66,8 @@ const ContentCard: React.FC<IContentCard> = ({
 		} catch (error) {
 			showToast("Erro ao processar requisição", "#E74646");
 			throw error;
+		} finally {
+			setLoadingFav(false);
 		}
 	};
 
@@ -94,14 +99,18 @@ const ContentCard: React.FC<IContentCard> = ({
 								<img src="src/assets/link.svg" alt="" />
 							</button>
 						</a>
-						<button 
-							style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
-							onClick={() => {
-								onClickFavorite();
-							}}
-						>
-							<img src={`src/assets/${iconFavorite}.svg`} alt="" />
-						</button>
+						{loadingFav ? (
+							<LoadingFav width="20px" height="20px"/>
+						) : (
+							<button 
+								style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
+								onClick={() => {
+									onClickFavorite();
+								}}
+							>
+								<img src={`src/assets/${iconFavorite}.svg`} alt="" />
+							</button>
+						)}
 					</div>
 				</div>
 				<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>

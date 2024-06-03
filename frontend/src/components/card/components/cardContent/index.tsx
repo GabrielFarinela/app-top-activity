@@ -8,6 +8,7 @@ import { searchImages } from "../../../../shared/google/searchImages";
 import { useToast } from "../../../../context/ToastContext";
 import Loading from "../../../../shared/loading";
 import Cookies from 'js-cookie';
+import LoadingFav from "../../../../shared/loadingFav";
 
 interface ICardContent {
 	dataCard: any;
@@ -20,6 +21,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard, onCallbackAdd, onCallba
 	const [modalOpen, setModalOpen] = useState(false);
 	const [images, setImages] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [loadingFav, setLoadingFav] = useState(false);
 
 	const { showToast } = useToast();
 
@@ -47,6 +49,7 @@ const CardContent: React.FC<ICardContent> = ({ dataCard, onCallbackAdd, onCallba
 	};
 
 	const insertUserWithEvent = async (idAdd: boolean): Promise<Response | void> => {
+		setLoadingFav(true);
 		try {
 			if (idAdd) {
 				const response = await fetch("http://localhost:3000/api/eventUser", {
@@ -92,6 +95,8 @@ const CardContent: React.FC<ICardContent> = ({ dataCard, onCallbackAdd, onCallba
 		} catch (error) {
 			showToast("Erro ao processar requisição", "#E74646");
 			throw error;
+		} finally {
+			setLoadingFav(false);
 		}
 	};
 
@@ -106,18 +111,22 @@ const CardContent: React.FC<ICardContent> = ({ dataCard, onCallbackAdd, onCallba
 					<div style={{ margin: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
 						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
 							<span title={`${dataCard.length > 0 && dataCard[0].titulo}`} style={{ color: "white", fontSize: "1.5rem" }}>{dataCard.length > 0 && dataCard[0].titulo} - (<span title={`#${dataCard.length > 0 && dataCard[0].tag}`} style={{ fontSize: "0.875rem", color: "white", opacity: "0.7" }}>#{dataCard.length > 0 && dataCard[0].tag}</span>)</span>
-							<div style={{ display: "flex", alignItems: "center" }}>
+							<div style={{ height: "40px", display: "flex", alignItems: "center" }}>
 								<a target="_blank" href={createLink()}>
 									<button style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}>
 										<img src="src/assets/link.svg" alt="" />
 									</button>
 								</a>
-								<button 
-									style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
-									onClick={() => favoriteEvent(dataCard[0].hasChecked ? false : true)}
-								>
-									<img src={`src/assets/${dataCard[0].hasChecked ? "favorite" : "favorite-clean"}.svg`} alt="" />
-								</button>
+								{loadingFav ? (
+									<LoadingFav width="20px" height="20px"/>
+								) : (
+									<button 
+										style={{ cursor: "pointer", backgroundColor: "transparent", border: "0" }}
+										onClick={() => favoriteEvent(dataCard[0].hasChecked ? false : true)}
+									>
+										<img src={`src/assets/${dataCard[0].hasChecked ? "favorite" : "favorite-clean"}.svg`} alt="" />
+									</button>
+								)}
 							</div>
 						</div>
 						<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
