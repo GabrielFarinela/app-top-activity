@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from '../signIn/styles';
 import Span from '../../components/span';
-import { Container, ContainerButton, ContainerInput, ContainerInputs, ContainerMain } from './styles';
+import { Container, ContainerButton, ContainerInput, ContainerInputs } from './styles';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import InputArea from '../../components/inputArea';
@@ -133,17 +133,15 @@ const MyProfile: React.FC = () => {
 					</div>
 				</div>
 
-				<ContainerMain>
-					<ContainerInputs>
-						<Span color="white" size="25px">Meus dados</Span>
-						<ContainerInput>
-							<Input error={errorNome} value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
-							<Input disabled value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
-							<Input error={errorSenha} value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
-							<InputArea error={errorBio} value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
-						</ContainerInput>
-					</ContainerInputs>
-				</ContainerMain>
+				<ContainerInputs>
+					<Span color="white" size="25px">Meus dados</Span>
+					<ContainerInput>
+						<Input error={errorNome} value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
+						<Input disabled value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
+						<Input error={errorSenha} value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
+						<InputArea error={errorBio} value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
+					</ContainerInput>
+				</ContainerInputs>
 				<ContainerButton>
 					<Button onClick={submit} type="button">Salvar</Button>
 				</ContainerButton>

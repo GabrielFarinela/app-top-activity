@@ -6,8 +6,8 @@ export const Description = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
-  height: 7.6rem;
-  line-height: 1.5rem;
+  height: 7.2rem;
+  line-height: 1.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
 `;

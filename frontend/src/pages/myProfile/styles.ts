@@ -9,11 +9,6 @@ export const Container = styled.form`
     height: calc(100vh - 81px);
     min-height: 820px;
     width: 100vw;
-
-    @media (max-width: 1139.5px){
-      min-height: 1200px;
-      gap: 60px
-    }
 `;
 
 export const ContainerMain = styled.div`
@@ -48,7 +43,7 @@ export const ContainerInputs = styled.div`
   }
 
   @media (max-width: 700px){
-    width: 100%;
+    width: 90%;
   }
 `;
 
@@ -63,7 +58,7 @@ export const ContainerInput = styled.div`
   }
 
   @media (max-width: 700px){
-    width: 100%;
+    width: 90%;
   }
 `;
 
