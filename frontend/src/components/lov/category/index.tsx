@@ -40,7 +40,7 @@ const LovCategory: React.FC<ILovCategory> = ({
 
 	return (
 		<Select value={value} onChange={handleChange}>
-			<option value="">Selecione uma categoria</option>
+			<option value="T">Selecione uma categoria</option>
 			{options.map((option, index) => (
 				<Option key={`${option}-${index}`} value={option}>
 					{option}

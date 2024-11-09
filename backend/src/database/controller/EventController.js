@@ -23,8 +23,14 @@ const saveEvents = async (events) => {
 const getShuffledEvents = async (category, limit = 10) => {
   if (!database.connect()) return [];
 
+  if(category && category.length > 0){
+    return await Event.aggregate([
+      { $match: { categoria: category } },
+      { $sample: { size: limit } }
+    ]);
+  }
+
   return await Event.aggregate([
-    { $match: { categoria: category } },
     { $sample: { size: limit } }
   ]);
 };

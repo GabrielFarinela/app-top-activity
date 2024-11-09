@@ -17,7 +17,7 @@ const MyProfile: React.FC = () => {
 	const [nome,setNome] = useState(Cookies.get('user_nome') ?? "");
 	const [email,setEmail] = useState(Cookies.get('user_email') ?? "");
 	const [senha,setSenha] = useState(Cookies.get('user_senha') ?? "");
-	const [categoria, setCagetoria] = useState(Cookies.get('user_categoria') ?? "");
+	const [categoria, setCagetoria] = useState(Cookies.get('user_categoria') ?? "T");
 	
 	const [loading,setLoading] = useState(false);
 
