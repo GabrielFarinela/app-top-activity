@@ -13,9 +13,9 @@ export default async function handler(req, res) {
     case 'GET':
       if(req.query.userId && req.query.limit){
         try {
-          const userId = req.query.userId;
+          const category = req.query.category;
           const limit = parseInt(req.query.limit) || 10;
-          const events = await EventController.getShuffledEvents(limit);
+          const events = await EventController.getShuffledEvents(category, limit);
           res.status(200).json(events);
         } catch (error) {
           res.status(500).json({ message: 'Erro interno do servidor' });

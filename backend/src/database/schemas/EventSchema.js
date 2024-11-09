@@ -6,6 +6,8 @@ const EventSchema = new Schema({
   data: { type: String, required: true },
   local: { type: String, required: true },
   descricao: { type: String, required: true },
+  categoria: { type: String, required: true },
+  valor: { type: String, required: true },
   termo: { type: String, required: true },
   eventId: { type: String }
 });

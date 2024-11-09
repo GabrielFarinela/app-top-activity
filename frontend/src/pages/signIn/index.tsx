@@ -9,6 +9,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Loading from '../../shared/loading';
 import { useToast } from '../../context/ToastContext';
+import { SearchGemini } from '../../shared/google/searchGemini';
 // import Checkbox from '../../components/checkbox';
 
 interface SignInProps {} 
@@ -67,10 +68,10 @@ const SignIn: React.FC<SignInProps> = () => {
 				Cookies.set('user_senha', user.senha);
 				Cookies.set('user_bio', user.bio);
 				
-				// if(!localStorage.getItem('eventos')){
-				// 	const events = await SearchGemini();
-				// 	localStorage.setItem('eventos', JSON.stringify(events));
-				// }
+				if(!localStorage.getItem('eventos')){
+					const events = await SearchGemini();
+					localStorage.setItem('eventos', JSON.stringify(events));
+				}
 				
 				navigate("/");
 				showToast(`Seja bem vindo de volta ${user.nome}`, '#00875F');

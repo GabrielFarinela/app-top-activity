@@ -20,13 +20,11 @@ const saveEvents = async (events) => {
   return await Event.insertMany(eventsWithId);
 };
 
-const getShuffledEvents = async (userId, limit = 10) => {
+const getShuffledEvents = async (category, limit = 10) => {
   if (!database.connect()) return [];
 
-  const favoriteEvents = await EventUser.find({ userId }).distinct('eventId');
-
   return await Event.aggregate([
-    { $match: { eventId: { $nin: favoriteEvents } } },
+    { $match: { categoria: category } },
     { $sample: { size: limit } }
   ]);
 };

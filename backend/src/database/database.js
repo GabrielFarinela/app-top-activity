@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 mongoose.set("strictQuery", true);
 
-const dbName = "topactivities";
+const dbName = "tActivity";
 
-const url = `mongodb+srv://gabifarinela:${process.env.DB_PWD}@cluster0.cl8fmby.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=Cluster0`;
+const url = `mongodb+srv://ceodaevolucao:${process.env.DB_PWD}@topactivities.qmknr.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=topactivities` 
 
 const connect = async () => {
   try {

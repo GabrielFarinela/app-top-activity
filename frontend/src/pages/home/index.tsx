@@ -34,7 +34,7 @@ const Home: React.FC = () => {
 			setLoading(true);
 		}
 		try {
-			const response = await fetch(`http://localhost:3000/api/event?limit=10&userId=${Cookies.get("user_id")}&offset=${offset}`);
+			const response = await fetch(`http://localhost:3000/api/event?limit=10&userId=${Cookies.get("user_id")}&category=${Cookies.get("user_categoria") || ""}&offset=${offset}`);
 			if (response.ok) {
 				const newEvents: IEvents[] = await response.json();
 				const eventsWithDefaultChecked = newEvents.map(event => ({

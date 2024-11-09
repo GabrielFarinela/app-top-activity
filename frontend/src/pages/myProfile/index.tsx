@@ -4,21 +4,20 @@ import Span from '../../components/span';
 import { Container, ContainerButton, ContainerInput, ContainerInputs } from './styles';
 import Button from '../../components/button';
 import Input from '../../components/input';
-import InputArea from '../../components/inputArea';
 import Cookies from 'js-cookie';
 import { useToast } from '../../context/ToastContext';
 import Loading from '../../shared/loading';
+import LovCategory from '../../components/lov/category';
 
 const MyProfile: React.FC = () => {
 	const [errorNome, setErrorNome] = useState(false);
 	const [errorSenha, setErrorSenha] = useState(false);
-	const [errorBio] = useState(false);
 
 	const [id] = useState(Cookies.get('user_id') ?? "");
 	const [nome,setNome] = useState(Cookies.get('user_nome') ?? "");
 	const [email,setEmail] = useState(Cookies.get('user_email') ?? "");
 	const [senha,setSenha] = useState(Cookies.get('user_senha') ?? "");
-	const [bio,setBio] = useState(Cookies.get('user_bio') ?? "");
+	const [categoria, setCagetoria] = useState(Cookies.get('user_categoria') ?? "");
 	
 	const [loading,setLoading] = useState(false);
 
@@ -52,7 +51,7 @@ const MyProfile: React.FC = () => {
 					"nome": nome,
 					"email": email,
 					"senha": senha,
-					"bio": bio
+					"categoria": categoria
 				})
 			});
 		
@@ -79,7 +78,7 @@ const MyProfile: React.FC = () => {
 
 			Cookies.set('user_nome', nome);
 			Cookies.set('user_senha', senha);
-			Cookies.set('user_bio', bio);
+			Cookies.set('user_categoria', categoria);
 		} catch (error) {
 			showToast("Erro ao atualizar seu perfil", "#E74646");
 		} finally {
@@ -100,6 +99,11 @@ const MyProfile: React.FC = () => {
 		});
 		
 		return initials.toUpperCase();
+	};
+
+	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		setCagetoria(event.target.value);
+		Cookies.set("", event.target.value);
 	};
 
 	return (
@@ -139,7 +143,10 @@ const MyProfile: React.FC = () => {
 						<Input error={errorNome} value={nome} onChange={(e) => setNome(e.target.value)} label="Nome" type="text"/>
 						<Input disabled value={email} onChange={(e) => setEmail(e.target.value)} label="Email" type="email"/>
 						<Input error={errorSenha} value={senha} onChange={(e) => setSenha(e.target.value)} label="Senha" type="password"/>
-						<InputArea error={errorBio} value={bio} onChange={(e) => setBio(e.target.value)} label="Bio"/>
+						<LovCategory 
+							handleChange={handleChange}
+							value={categoria}
+						/>
 					</ContainerInput>
 				</ContainerInputs>
 				<ContainerButton>

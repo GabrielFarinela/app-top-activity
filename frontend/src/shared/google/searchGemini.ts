@@ -1,7 +1,8 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 	
-const apiKey = "AIzaSyCzdBrCLpc659zoMDgtl36XScp2W-7Lzcs";
-const genAI = new GoogleGenerativeAI(apiKey);
+// const apiKey = "AIzaSyCzdBrCLpc659zoMDgtl36XScp2W-7Lzcs";
+const apiKey2 = "AIzaSyC--WOhuoP1UGaSl2xFyqAw0SfWTGyrTsk";
+const genAI = new GoogleGenerativeAI(apiKey2);
 	
 const model = genAI.getGenerativeModel({
 	model: "gemini-1.5-flash",
@@ -11,7 +12,7 @@ const generationConfig = {
 	temperature: 0,
 	topP: 0.95,
 	topK: 64,
-	maxOutputTokens: 15000,
+	maxOutputTokens: 20000,
 	responseMimeType: "application/json",
 };
 	
@@ -63,14 +64,17 @@ export async function SearchGemini() {
 		safetySettings,
 	});
 	
-	const result = await chatSession.sendMessage(`Gemini, preciso da sua ajuda para encontrar eventos gastronômicos que vão acontecer no Rio Grande do Sul em 2024.
+	const result = await chatSession.sendMessage(`Gemini, preciso da sua ajuda para encontrar eventos de Animais e Pets (feiras de adoção, exposições de pets, workshops de cuidados), que vão acontecer no Rio Grande do Sul entre novembro de 2024 e dezembro de 2025.
 														   		Por favor, liste 30 eventos com as seguintes informações:
 														   		- Título do evento em uma propriedade titulo
 														   		- Descrição do evento bem detalhada com no mínimo 400 caracteres em uma propriedade descricao
-														   		- Mes em que normalmente occorre em uma propriedade data
+														   		- Mes em que o evento vai acontecer em uma propriedade data
 														   		- Local do evento em uma propriedade local
 														   		- Tag que indique sobre o que é o evento em uma propriedade tag
-														   		- Uma palavra-chave para pesquisar através do Google Imagens sobre o evento em uma propriedade termo`);
+																	- A palavra Animais e Pets em uma propriedade categoria
+																	- Valor do evento em uma propriedade valor
+														   		- Uma palavra-chave para pesquisar através do Google Imagens sobre o evento em uma propriedade termo
+																	- Fonte de onde tirou o evento em uma propriedade fonte`);
 	const text = result.response.text();
 
 	const itens = JSON.parse(text);
