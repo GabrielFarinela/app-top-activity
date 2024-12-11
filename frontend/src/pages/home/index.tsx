@@ -3,11 +3,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useMemo, useEffect } from 'react';
 import { Header } from '../signIn/styles';
-import Span from '../../components/span';
 import Cards from '../../components/card';
 import CardContent from '../../components/card/components/cardContent';
 import Loading from '../../shared/loading';
 import Cookies from 'js-cookie';
+import Span from '../../components/span';
 
 export interface IEvents{
 	data: string;

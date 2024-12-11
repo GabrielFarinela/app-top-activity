@@ -3,7 +3,7 @@ import StyledButton from './styles';
 
 export interface IButton{
    children: ReactNode;
-	type: "button" | "submit" | "reset" | undefined
+	type: "button" | "submit" | undefined
 	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
